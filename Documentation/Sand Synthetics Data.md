@@ -1,267 +1,164 @@
-# UGV Unity Simulator
+# Sand Synthetic Data Scene
 
-A simulation package that connects an Ackermann steered vehicle made in Unity to ROS2 for vehicle control, synthetic sensor generation, and evaluation data recording.
+## Overview
 
-## Tech Stack
-**Unity 3D • ROS2 • Ackermann Steering • GPS • IMU • Camera • LiDAR • RViz • OBS Studio • DaVinci Resolve**
+The main goal is to create a controlled environment where sand particles are clearly visible to the Camera and actively detected by the LiDAR scanner.
 
----
+This scene focuses purely on synthetic data generation rather than vehicle driving or handling. We placed the particle system directly in front of the vehicle's sensors so we could study how the exact same environment gets represented differently through a visual camera image versus a LiDAR point cloud.
 
+The complete sensor output was logged into a ROS bag so you can easily replay and inspect the generated data later.
 
-# At a Glance
+**Evaluation Video**
 
-| Vehicle & Control                       | Sensor Simulation                           | Terrain Evaluation          |
-| --------------------------------------- | ------------------------------------------- | --------------------------- |
-| **[PLACE OBSTACLE / VEHICLE GIF HERE]** | **[PLACE LIDAR OR SENSOR SCREENSHOT HERE]** | **[PLACE DESERT GIF HERE]** |
-
-The simulation combines a ROS2-controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
-
+[PLACE SAND SYNTHETIC DATA YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
 
 ---
 
+# 1. Objective
 
-# What Is Included
+This scenario proves that these features work:
+* **Synthetic Camera Data:** Sand particles show up clearly in the simulated camera output.
+* **Synthetic LiDAR Data:** LiDAR rays interact with the particle objects to generate accurate point cloud returns.
+* **Controlled Environment:** The particle system can be fully tested without needing the vehicle to move.
+* **ROS 2 Integration:** Visual camera frames and LiDAR data stream continuously through ROS 2.
+* **Sensor Comparison:** You can analyze how two completely different sensor types view the exact same particle field.
+* **Data Logging:** All sensor outputs are captured into a ROS bag for later playback and analysis.
 
-### Vehicle
+Ultimately, this test shows how Unity can be used to generate highly controlled synthetic data that can later be fed directly into ROS 2 tools for processing or machine learning training.
 
-- **Ackermann Steering** — Computes front wheel steering angles for real vehicle like turning.
-- **ROS Vehicle Control** — Receives throttle, brake, and steering commands from ROS2.
-- **Four Wheel Suspension** — Simulates wheel movement over uneven terrain.
+[PLACE SAND SCENE WIDE SCREENSHOT HERE]
 
-### Sensors
-
-- **GPS** — Publishes the simulated vehicle's geographic coordinates.
-- **IMU** — Publishes vehicle orientation, angular velocity, and acceleration.
-- **Camera** — Publishes camera images from the vehicle.
-- **LiDAR** — Publishes detected 3D point cloud data.
-
-### ROS2
-
-- **Vehicle Input** — Receives control commands through a custom ROS2 message.
-- **Vehicle Output** — Publishes the current vehicle state and motion feedback.
-- **Sensor Publishing** — Streams simulated GPS, IMU, camera, and LiDAR data.
-- **TF Publishing** — Publishes the transform tree between the vehicle and sensor frames.
-- **Joint States** — Publishes wheel positions and suspension state.
-- **ROS Bag Recording** — Records evaluation scenario data for playback and verification.
-
+[PLACE SAND PARTICLE SIMULATION GIF HERE]
 
 ---
 
-# Evaluation Scenarios
+# 2. ROS Initialization and ROS Bag Creation
 
-The package includes dedicated scenes covering the evaluation requirements.
-
-### 01 — Obstacle Course
-
-**[PLACE OBSTACLE COURSE GIF HERE]**
-
-A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
-
-**[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
-
----
-
-### 02 — Desert Driving
-
-**[PLACE DESERT / DUNE GIF HERE]**
-
-The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity target of **8 m/s**.
-
-**[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
-
-The terrain uses the following physics material:
-
-```text
-Dynamic Friction: 0.3
-Static Friction: 0.4
-Bounciness: 0.2
-Friction Combine: Minimum
-Bounce Combine: Average
-```
-
-**[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]**
-
----
-
-### 03 — Sand Synthetic Data
-
-Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
-
-| Camera                                     | LiDAR                                     |
-| ------------------------------------------ | ----------------------------------------- |
-| **[PLACE CAMERA PARTICLE IMAGE/GIF HERE]** | **[PLACE LIDAR PARTICLE IMAGE/GIF HERE]** |
-
-Vehicle movement is not required for this scene. The focus is on how the particles appear in the generated sensor outputs.
-
-### 04 — ROS Input & Vehicle Feedback
-
-This demonstration shows the complete ROS2 control and feedback loop.
-
-**[PLACE ROS INPUT / ROS OUTPUT GIF OR SCREENSHOT HERE]**
-
-```text
-ROS2 Input Command
-        ↓
-Unity Vehicle Controller
-        ↓
-Ackermann Steering + Vehicle Physics
-        ↓
-Vehicle State
-        ↓
-ROS2 Output Feedback
-```
-
-The vehicle receives throttle, brake, and steering commands through the custom `ugv_assignment_msgs/Input` message.
-
-The resulting vehicle state, velocity, angular velocity, and steering angles are published back to ROS2 through `ugv_assignment_msgs/Output`.
-
-```text
-ugv_assignment_msgs/Input
-
-float64 throttle         # Range: 0.0 to 100.0 (percent)
-float64 brake            # Range: 0.0 to 100.0 (percent)
-float64 steering_angle   # Range: -0.5 to 0.5 (radians, negative = left)
-```
-
-```text
-ugv_assignment_msgs/Output
-
-string state                         # One of: "Parking", "Manual", ...
-float64 linear_velocity              # m/s
-float64 angular_velocity             # # rad/s  
-float64 front_left_steering_angle    # radians
-float64 front_right_steering_angle   # radians
-```
-
-**[PLACE ROS INPUT TERMINAL + UNITY VEHICLE + ROS OUTPUT TERMINAL SCREENSHOT HERE]**
-
-🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](PLACE_ROS_INPUT_OUTPUT_YOUTUBE_LINK_HERE)**
-
----
-
----
-
-# Project Setup
-
-The repository is delivered as a Unity Package Manager compatible package. The repository does not require cloning the full Unity project.
-This guide covers the dependencies and ROS2 setup required to connect the Unity simulation with the ROS2 environment.
-
-## Requirements
-
-- Unity 3D - URP (Universal Render Pipeline)
-- ROS2 Humble
-- Unity Robotics ROS-TCP Connectors
-
----
-
-## 1. Install ROS-TCP Connector
-
-The Unity simulation uses the ROS-TCP Connector to communicate with ROS2.
-
-In your Unity project:
-
-1. Open **Window → Package Manager**.
-2. Click the **+** button.
-3. Select **Add package from git URL...**
-4. Enter:
-
-```text
-https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robotics.ros-tcp-connector
-
-### 2. Start the ROS endpoint in Linux
+Before launching the scene in Unity, we need to spin up our ROS 2 environment and connect the network bridge. Open your terminal and run:
 
 ```bash
-source /opt/ros/[DISTRO]/setup.bash
+# Set up your ROS 2 environment
+source /opt/ros/humble/setup.bash
+
+# Start the connection bridge between Unity and ROS 2
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
-### 3. Add the custom package in Unity
+### Checking Active Topics
+Once Unity links up with the bridge, the active sensor publishers will automatically start streaming data. To check if the topics are running, open a new terminal window and list them:
 
-Open:
-
-```text
-Window → Package Manager → + → Add package from current repo's Git URL
+```bash
+ros2 topic list
 ```
 
-Add:
+If you want to look at the raw Camera frames and LiDAR data points streaming across individual topics in real-time, use the `echo` command:
 
-```text
-[REPOSITORY-URL]
+```bash
+# Watch the live camera metadata stream
+ros2 topic echo /camera
+
+# Monitor incoming LiDAR scanning data
+ros2 topic echo /lidar
 ```
 
-### 4. Open any evaluation scene
+You can check that the data is publishing at the correct rates by measuring their topic frequencies with:
 
-```text
-Scenes/
-├── ObstacleScene
-├── DesertScene
-└── SandParticleScene
+```bash
+ros2 topic hz /camera
+ros2 topic hz /lidar
 ```
 
-Start the ROS endpoint, open the required scene, and press **Play**.
+### Recording the Session
+We log the entire session into a folder named `sand1` so we can inspect the synthetic data later. Since the vehicle doesn't need to move for this evaluation, the recording focuses purely on the data coming off the sensors:
 
----
-
-# ROS Interface
-
-### Published Data
-
-| Category | Topic                 | Type                         |   Rate | Description                                      |
-| -------- | --------------------- | ---------------------------- | -----: | ------------------------------------------------ |
-| Feedback | `/vehicle/output`     | `ugv_assignment_msgs/Output` |  50 Hz | Publishes vehicle state feedback.                |
-| GPS      | `/gps`                | `sensor_msgs/NavSatFix`      |  10 Hz | Publishes simulated vehicle coordinates.         |
-| IMU      | `/imu`                | `sensor_msgs/Imu`            | 100 Hz | Publishes vehicle orientation and motion data.   |
-| Camera   | `/camera`             | `sensor_msgs/Image`          |  30 Hz | Publishes the simulated camera image.            |
-| LiDAR    | `/lidar`              | `sensor_msgs/PointCloud2`    |  10 Hz | Publishes the simulated LiDAR point cloud.       |
-| TF       | `/tf`                 | `tf2_msgs/TFMessage`         |  50 Hz | Publishes the vehicle and sensor transform tree. |
-| Joints   | `/jointStates`        | `sensor_msgs/JointState`     |  50 Hz | Publishes wheel joint positions.                 |
-
----
-
-# Bonus Point - Custom Obstacle Assets
-
-Some of the obstacle assets used in the Obstacle scene were modelled and textured specifically for this project using blender.
-The original Blender source file is included as supporting evidence:
-
-```text
-ROSTII.blend
+```bash
+ros2 bag record -o sand1 /camera /lidar
 ```
-The Blender source contains the original modelling and texture work used to create the custom obstacle assets.
 
-**[PLACE BLENDER VIEWPORT SCREENSHOT HERE]**
+[PLACE ROS2 TERMINAL / ENDPOINT SCREENSHOT HERE]
 
-**[PLACE WIREFRAME / EDIT MODE SCREENSHOT HERE]**
+[PLACE ROS BAG RECORDING SCREENSHOT HERE]
 
-**[PLACE TEXTURE PAINTING SCREENSHOT HERE]**
+Once you are done recording, you can review the exact Camera and LiDAR outputs at any time without booting up Unity. Just run:
 
-The unique texture painting and source `.blend` file are included to demonstrate that these assets were created and edited for this project rather than only imported as finished models.
-
-The resulting assets are used in the Unity obstacle evaluation scene:
-
-**[PLACE UNITY OBSTACLE SCENE SCREENSHOT HERE]**
-
+```bash
+ros2 bag info ~/ugv_ros2_ws/sand1
+```
 
 ---
 
-# Downloading the Recordings & ROS Bags
+# 3. Things Used and Created
 
-Each evaluation scenario is accompanied by a video recording and ROS bag data.
+### Synthetic Particle Environment
+* A dedicated Unity testing scene configured specifically for sand data generation.
+* Suspended sand particles placed directly inside the active sensor field of view.
+* Balanced placement so that both the Camera and the LiDAR scan the exact same space.
+* Zero vehicle movement required, ensuring a perfectly controlled baseline.
 
-* [Evaluation Videos](Documentation~/Evaluation.md)
-* [ROS Bag Recording and Playback](Documentation~/ROS-Bags.md)
+### Sensor Setup
+The two primary modules under review are:
+* **Camera:** Captures the exact visual appearance, color, and density of the floating sand particles.
+* **LiDAR:** Sends out rays to detect particle boundaries whenever they enter the configured target layers.
+
+The remaining vehicle sensors (`GPS`, `IMU`, `TF`, and `Joint States`) stay completely active and accessible in the background.
+
+### LiDAR Debug Visualization
+We rely heavily on Unity's debug rays to watch exactly how the laser beams interact with the sand volume. This debug overlay makes it easy to confirm:
+* Whether individual LiDAR rays are hitting the floating particles.
+* Whether the particle objects are assigned to the correct physics layer.
+
+[PLACE UNITY SAND PARTICLE SCENE SCREENSHOT HERE]
+
+[PLACE LIDAR DEBUG RAYS SCREENSHOT HERE]
+
+[PLACE PARTICLE SYSTEM INSPECTOR SCREENSHOT HERE]
 
 ---
 
+#4. Active Sensors
 
-# Documentation
+The core focus of this entire test is the synchronized data coming from the Camera and LiDAR modules:
 
-* [Architecture & Design Decisions](Documentation~/Architecture.md)
-* [ROS2 Setup](Documentation~/ROS2-Setup.md)
-* [Evaluation & Results](Documentation~/Evaluation.md)
-* [ROS Bag Recording](Documentation~/ROS-Bags.md)
+* **Camera:** Broadcasts a synthetic image feed showing the floating sand. This verifies that visual distortions caused by sandstorms are accurately captured by the sensor.
+* **LiDAR:** Scans the air volume and generates point cloud returns. The sand particles are specifically configured to reflect the laser beams, forcing them to show up as physical obstructions in the LiDAR output data.
+* **GPS & IMU:** Stay turned on and broadcast constant, stationary baseline data.
+* **TF & Joint States:** Continually maintain the spatial coordinate tree and static wheel states so the sensor frame relationships remain perfectly accurate.
+
+[PLACE RVIZ SENSOR OUTPUT SCREENSHOT HERE]
+
+[PLACE LIDAR PARTICLE OUTPUT SCREENSHOT HERE]
+
+[PLACE CAMERA SENSOR OUTPUT SCREENSHOT HERE]
+
+The most critical takeaway here is that both sensors look at the exact same sand cloud and translate it into two completely unique, highly realistic data types simultaneously.
 
 ---
 
-# References
+# 5. Optimization
 
-Unity3D, https://github.com/Unity-Technologies/ROS-TCP-Connector, ROS2 Humble, RViz 2, Blender, OBS Studio, LiCEcap, Davinci Resolve 
+We intentionally kept this scene highly optimized. The goal was to build a clean testing loop for particle rendering and laser raycasts without overloading the system with massive environments.
+
+To guarantee a stable framerate and clean data logging, we used these performance guidelines:
+* Only essential particle systems and sensor rigs are active in the hierarchy.
+* Particle counts are strictly capped to prevent rendering lag.
+* The sand volume is tightly confined only to the area directly visible to the sensor lenses.
+* Camera and LiDAR update rates are kept at controlled, steady intervals instead of firing haphazardly on every single engine frame.
+* LiDAR raycast detection is strictly limited to the required object layers to minimize processing overhead.
+* We completely left out heavy terrain assets and decorative scenery.
+
+---
+
+# 6. Challenges
+
+* **Making Particles "Solid" to LiDAR:** A particle can easily be seen by a regular camera in Unity, but standard raycast based LiDAR systems will slice right through it undetected. We had to spend extra time configuring the particle collisions so that the laser beams would hit them and register a valid return distance.
+* **Layer Configuration:** We had to ensure every floating element lived on a dedicated layer that matched the LiDAR sensor's target detection mask.
+* **Balancing Particle Density:** Finding the right balance was tough. If we used too few particles, the sand didn't show up in the sensor logs. If we used too many, the camera view became a solid wall of color and bogged down the rendering frame rate.
+* **Sensor Positioning:** The sand particles had to be positioned precisely at the intersection point where the Camera's field of view overlapped with the LiDAR's scanning plane.
+* **Validating Output:** We had to continually cross reference live debug rays with RViz2 point clouds to confirm that the sand was actually registering as data points, rather than just looking pretty on the Unity screen.
+
+---
+
+# 8. Future Improvements
+* Adding variable particle density presets to simulate everything from light morning haze to blinding desert sandstorms.
+
+  
