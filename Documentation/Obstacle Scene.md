@@ -1,267 +1,167 @@
-# UGV Unity Simulator
+# Obstacle Scene
 
-A simulation package that connects an Ackermann steered vehicle made in Unity to ROS2 for vehicle control, synthetic sensor generation, and evaluation data recording.
+## Overview
 
-## Tech Stack
-**Unity 3D • ROS2 • Ackermann Steering • GPS • IMU • Camera • LiDAR • RViz • OBS Studio • DaVinci Resolve**
+We built this scene to test how well the vehicle handles, steers, and communicates under realistic conditions. It lets us evaluate Ackermann steering, 4 wheel suspension, ROS 2 communication, sensor publishing, and live vehicle feedback.
 
----
+The entire testing loop was built from scratch. To meet the bonus requirements for custom assets, I modeled and prepared the custom obstacles ourselves using Blender. Have attached the blend file in the repository.
 
+**Evaluation Video**
 
-# At a Glance
-
-| Vehicle & Control                       | Sensor Simulation                           | Terrain Evaluation          |
-| --------------------------------------- | ------------------------------------------- | --------------------------- |
-| **[PLACE OBSTACLE / VEHICLE GIF HERE]** | **[PLACE LIDAR OR SENSOR SCREENSHOT HERE]** | **[PLACE DESERT GIF HERE]** |
-
-The simulation combines a ROS2-controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
-
+[PLACE OBSTACLE SCENE YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
 
 ---
 
+# 1. Objective
 
-# What Is Included
+The goal here was to create a custom obstacle course that forces the vehicle to turn and maneuver rather than just drive in a straight line. 
 
-### Vehicle
+This scenario proves that the following features work seamlessly together:
+* **Ackermann Steering:** Different front wheel steering angles during turns.
+* **Core Driving:** Smooth acceleration, braking, and steering response.
+* **Course Navigation:** Driving through a maze of objects.
+* **Suspension System:** Real time movement of all 4 wheels over the terrain.
+* **ROS 2 Integration:** Reliable control inputs coming in and car feedback going out.
+* **Sensor Streams:** Constant updates from the GPS, IMU, Camera, and LiDAR sensors.
+* **Data Logging:** Complete ROS bag recordings for later playback and analysis.
 
-- **Ackermann Steering** — Computes front wheel steering angles for real vehicle like turning.
-- **ROS Vehicle Control** — Receives throttle, brake, and steering commands from ROS2.
-- **Four Wheel Suspension** — Simulates wheel movement over uneven terrain.
+[PLACE OBSTACLE SCENE WIDE SCREENSHOT HERE]
 
-### Sensors
-
-- **GPS** — Publishes the simulated vehicle's geographic coordinates.
-- **IMU** — Publishes vehicle orientation, angular velocity, and acceleration.
-- **Camera** — Publishes camera images from the vehicle.
-- **LiDAR** — Publishes detected 3D point cloud data.
-
-### ROS2
-
-- **Vehicle Input** — Receives control commands through a custom ROS2 message.
-- **Vehicle Output** — Publishes the current vehicle state and motion feedback.
-- **Sensor Publishing** — Streams simulated GPS, IMU, camera, and LiDAR data.
-- **TF Publishing** — Publishes the transform tree between the vehicle and sensor frames.
-- **Joint States** — Publishes wheel positions and suspension state.
-- **ROS Bag Recording** — Records evaluation scenario data for playback and verification.
-
+[PLACE OBSTACLE NAVIGATION GIF HERE]
 
 ---
 
-# Evaluation Scenarios
+# 2. ROS Initialization and ROS Bag Creation
 
-The package includes dedicated scenes covering the evaluation requirements.
-
-### 01 — Obstacle Course
-
-**[PLACE OBSTACLE COURSE GIF HERE]**
-
-A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
-
-**[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
-
----
-
-### 02 — Desert Driving
-
-**[PLACE DESERT / DUNE GIF HERE]**
-
-The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity target of **8 m/s**.
-
-**[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
-
-The terrain uses the following physics material:
-
-```text
-Dynamic Friction: 0.3
-Static Friction: 0.4
-Bounciness: 0.2
-Friction Combine: Minimum
-Bounce Combine: Average
-```
-
-**[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]**
-
----
-
-### 03 — Sand Synthetic Data
-
-Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
-
-| Camera                                     | LiDAR                                     |
-| ------------------------------------------ | ----------------------------------------- |
-| **[PLACE CAMERA PARTICLE IMAGE/GIF HERE]** | **[PLACE LIDAR PARTICLE IMAGE/GIF HERE]** |
-
-Vehicle movement is not required for this scene. The focus is on how the particles appear in the generated sensor outputs.
-
-### 04 — ROS Input & Vehicle Feedback
-
-This demonstration shows the complete ROS2 control and feedback loop.
-
-**[PLACE ROS INPUT / ROS OUTPUT GIF OR SCREENSHOT HERE]**
-
-```text
-ROS2 Input Command
-        ↓
-Unity Vehicle Controller
-        ↓
-Ackermann Steering + Vehicle Physics
-        ↓
-Vehicle State
-        ↓
-ROS2 Output Feedback
-```
-
-The vehicle receives throttle, brake, and steering commands through the custom `ugv_assignment_msgs/Input` message.
-
-The resulting vehicle state, velocity, angular velocity, and steering angles are published back to ROS2 through `ugv_assignment_msgs/Output`.
-
-```text
-ugv_assignment_msgs/Input
-
-float64 throttle         # Range: 0.0 to 100.0 (percent)
-float64 brake            # Range: 0.0 to 100.0 (percent)
-float64 steering_angle   # Range: -0.5 to 0.5 (radians, negative = left)
-```
-
-```text
-ugv_assignment_msgs/Output
-
-string state                         # One of: "Parking", "Manual", ...
-float64 linear_velocity              # m/s
-float64 angular_velocity             # # rad/s  
-float64 front_left_steering_angle    # radians
-float64 front_right_steering_angle   # radians
-```
-
-**[PLACE ROS INPUT TERMINAL + UNITY VEHICLE + ROS OUTPUT TERMINAL SCREENSHOT HERE]**
-
-🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](PLACE_ROS_INPUT_OUTPUT_YOUTUBE_LINK_HERE)**
-
----
-
----
-
-# Project Setup
-
-The repository is delivered as a Unity Package Manager compatible package. The repository does not require cloning the full Unity project.
-This guide covers the dependencies and ROS2 setup required to connect the Unity simulation with the ROS2 environment.
-
-## Requirements
-
-- Unity 3D - URP (Universal Render Pipeline)
-- ROS2 Humble
-- Unity Robotics ROS-TCP Connectors
-
----
-
-## 1. Install ROS-TCP Connector
-
-The Unity simulation uses the ROS-TCP Connector to communicate with ROS2.
-
-In your Unity project:
-
-1. Open **Window → Package Manager**.
-2. Click the **+** button.
-3. Select **Add package from git URL...**
-4. Enter:
-
-```text
-https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robotics.ros-tcp-connector
-
-### 2. Start the ROS endpoint in Linux
+Before hitting play in Unity, we need to set up our ROS 2 environment and launch the network handshake bridge. Open your terminal and run:
 
 ```bash
-source /opt/ros/[DISTRO]/setup.bash
+# Set up your ROS 2 environment
+source /opt/ros/humble/setup.bash
+
+# Start the connection bridge between Unity and ROS
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
-### 3. Add the custom package in Unity
+### Checking Active Topics
+Once Unity connects to the bridge, it starts streaming live data. If you want to verify that the topics are active and see the exact data running through them, open a new terminal window and use the `echo` command:
 
-Open:
-
-```text
-Window → Package Manager → + → Add package from current repo's Git URL
+```bash
+# View live data on a specific topic (e.g., LiDAR or Feedback)
+ros2 topic echo /lidar
+ros2 topic echo /feedback
 ```
 
-Add:
+### Recording the Session
+We log the entire run into a ros bag named `obstacle1` so we can inspect the data later without re-running the simulator. To record the specific vehicle state, control, and sensor data, run:
 
-```text
-[REPOSITORY-URL]
+```bash
+ros2 bag record -o obstacle1 /input /feedback /gps /imu /camera /lidar /tf /joint_states
 ```
 
-### 4. Open any evaluation scene
+[PLACE ROS2 TERMINAL / ENDPOINT SCREENSHOT HERE]
 
-```text
-Scenes/
-├── ObstacleScene
-├── DesertScene
-└── SandParticleScene
-```
+[PLACE ROS BAG RECORDING SCREENSHOT HERE]
 
-Start the ROS endpoint, open the required scene, and press **Play**.
+Once finished, this recorded data package can be replayed at any time to verify sensor accuracy or analyze the path taken.
 
 ---
 
-# ROS Interface
+# 3. Things Used and Created
 
-### Published Data
+### Environment
+* A custom driving track built specifically for vehicle evaluation.
+* Solid, fixed obstacles modeled in Blender.
+* Different Camera Angles and LiDAR debug rays.
 
-| Category | Topic                 | Type                         |   Rate | Description                                      |
-| -------- | --------------------- | ---------------------------- | -----: | ------------------------------------------------ |
-| Feedback | `/vehicle/output`     | `ugv_assignment_msgs/Output` |  50 Hz | Publishes vehicle state feedback.                |
-| GPS      | `/gps`                | `sensor_msgs/NavSatFix`      |  10 Hz | Publishes simulated vehicle coordinates.         |
-| IMU      | `/imu`                | `sensor_msgs/Imu`            | 100 Hz | Publishes vehicle orientation and motion data.   |
-| Camera   | `/camera`             | `sensor_msgs/Image`          |  30 Hz | Publishes the simulated camera image.            |
-| LiDAR    | `/lidar`              | `sensor_msgs/PointCloud2`    |  10 Hz | Publishes the simulated LiDAR point cloud.       |
-| TF       | `/tf`                 | `tf2_msgs/TFMessage`         |  50 Hz | Publishes the vehicle and sensor transform tree. |
-| Joints   | `/jointStates`        | `sensor_msgs/JointState`     |  50 Hz | Publishes wheel joint positions.                 |
+### Vehicle Setup
+* Our standard Unmanned Ground Vehicle (UGV) car prefab.
+* Functional Ackermann steering geometry.
+* Active 4 wheel suspension springs.
+* Independent turning limits on the front left and front right wheels.
+* Built in ROS 2 input, output scripts.
 
----
+### ROS 2 Messages
+* **Control Inputs:** The vehicle listens for driving commands via the `ugv_assignment_msgs/Input` format.
+* **Feedback Output:** The vehicle replies with real time updates using the `ugv_assignment_msgs/Output` format.
 
-# Bonus Point - Custom Obstacle Assets
+[PLACE UNITY SCENE HIERARCHY SCREENSHOT HERE]
 
-Some of the obstacle assets used in the Obstacle scene were modelled and textured specifically for this project using blender.
-The original Blender source file is included as supporting evidence:
-
-```text
-ROSTII.blend
-```
-The Blender source contains the original modelling and texture work used to create the custom obstacle assets.
-
-**[PLACE BLENDER VIEWPORT SCREENSHOT HERE]**
-
-**[PLACE WIREFRAME / EDIT MODE SCREENSHOT HERE]**
-
-**[PLACE TEXTURE PAINTING SCREENSHOT HERE]**
-
-The unique texture painting and source `.blend` file are included to demonstrate that these assets were created and edited for this project rather than only imported as finished models.
-
-The resulting assets are used in the Unity obstacle evaluation scene:
-
-**[PLACE UNITY OBSTACLE SCENE SCREENSHOT HERE]**
-
+[PLACE VEHICLE PREFAB / INSPECTOR SCREENSHOT HERE]
 
 ---
 
-# Downloading the Recordings & ROS Bags
+# 4. Camera Angle
 
-Each evaluation scenario is accompanied by a video recording and ROS bag data.
+We positioned the main evaluation camera to give a perfectly clear view of the action. The placement makes it easy to track:
+* The vehicle's entry point into the obstacle grid.
+* Wheel turning angles during sharp turns.
+* Physical suspension compression as the weight shifts.
+* Clearances between the vehicle body and the obstacle walls.
 
-* [Evaluation Videos](Documentation~/Evaluation.md)
-* [ROS Bag Recording and Playback](Documentation~/ROS-Bags.md)
+[PLACE MAIN CAMERA ANGLE SCREENSHOT HERE]
 
----
-
-
-# Documentation
-
-* [Architecture & Design Decisions](Documentation~/Architecture.md)
-* [ROS2 Setup](Documentation~/ROS2-Setup.md)
-* [Evaluation & Results](Documentation~/Evaluation.md)
-* [ROS Bag Recording](Documentation~/ROS-Bags.md)
+[PLACE VIDEO / GIF FROM FINAL CAMERA ANGLE HERE]
 
 ---
 
-# References
+# 5. Active Sensors
 
-Unity3D, https://github.com/Unity-Technologies/ROS-TCP-Connector, ROS2 Humble, RViz 2, Blender, OBS Studio, LiCEcap, Davinci Resolve 
+Every single sensor node stays turned on and publishes data continuously as the vehicle navigates the track:
+
+* **GPS:** Tracks and publishes simulated global positioning coordinates.
+* **IMU:** Measures orientation changes, rotational speed, and live G-forces.
+* **Camera:** Streams a live visual synthetic image feed straight out of the vehicle's hood.
+* **LiDAR:** Generates a point cloud by scanning the surrounding obstacle layout.
+* **Vehicle Feedback:** Broadcasts actual structural car state, velocity, and steering angle.
+* **TF & Joint States:** Continually maintains the spatial transform tree and wheel spin states.
+
+[PLACE RVIZ / ROS TOPIC / SENSOR OUTPUT SCREENSHOT HERE]
+
+[PLACE LIDAR OUTPUT SCREENSHOT OR GIF HERE]
+
+Because these streams run simultaneously with the simulation, the entire obstacle run can be reviewed visually inside RViz by playing back the recorded ROS bag.
+
+---
+
+# 6. Optimization
+
+We intentionally kept this scene visually clean. The goal was to build a environment for code, control loops, and sensor messages, not a heavy graphical showpiece. 
+
+To guarantee a stable framerate, we used these performance guidelines:
+* Only essential scene objects and landscape meshes are loaded.
+* Obstacles use highly simplified box or capsule collision geometry instead of complex mesh colliders.
+* Track design focuses purely on steering tests without adding distracting decorations.
+* Sensors use fixed time loops (`InvokeRepeating`) to stream data at controlled rates (e.g., 5 Hz or 10 Hz) rather than hogging performance inside Unity's main `Update()` loop.
+
+This keeps the engine responsive and prevents lag while running physics, rendering, and high-frequency network packets together.
+
+---
+
+# 7. Challenges
+
+* **Finding the Sweet Spot in Layout Spacing:** If obstacles were placed too close together, the physical turn radius of the Ackermann steering made it impossible to pass cleanly. If placed too far apart, the course became a simple straight line that failed to test the steering limits.
+* **Data Threading Sync:** Ensuring that sensor publishing didn't choke up the main vehicle control inputs while publishing through tight corners required strict timing configurations.
+
+---
+
+# 8. Future Improvements
+
+* Designing tighter, more obstacle environment.
+* Hooking up autonomous pathfinding nodes instead of using manual steering commands.
+* Comparing performance data profiles across entirely different track shapes.
+
+---
+
+# 9. Key Takeaways
+
+Building this evaluation scene taught us how multiple complex subsystems behave when forced to work under one roof. 
+
+Our main design lessons included:
+* How to size a testing track based on the actual physical turning limits of a vehicle.
+* How to analyze and verify true Ackermann steering mechanics under continuous load.
+* How to configure suspension values to handle sudden weight shifts during quick turns.
+* How to successfully route remote control commands and benifit from sensor data on the move.
+* How to capture and bundle a multi-channel live simulation into a re-playable ROS bag file.
+
+Ultimately, this scene proves that our vehicle model, network architecture, and data pipelines are fully capable of handling real driving scenarios.
