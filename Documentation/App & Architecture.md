@@ -82,10 +82,11 @@ Unity and ROS 2 exchange data over a network bridge using the Unity Robotics ROS
 | :--- | :--- | :--- | :--- |
 | ROS → Unity | `/input` | `ugv_assignment_msgs/Input` | Throttle, brake, and steering control values. |
 | Unity → ROS | `/feedback` | `ugv_assignment_msgs/Output` | Vehicle state and active motion feedback. |
-| Unity → ROS | `/camera` | `sensor_msgs/Image` | Synthetic RGB camera frames. |
-| Unity → ROS | `/lidar` | `sensor_msgs/LaserScan` | Obstacle and sand particle ranges. |
 | Unity → ROS | `/gps` | `sensor_msgs/NavSatFix` | Approximate geographic coordinates. |
 | Unity → ROS | `/imu` | `sensor_msgs/Imu` | Orientation, angular velocity, and linear acceleration. |
+| Unity → ROS | `/camera` | `sensor_msgs/Image` | Synthetic RGB camera frames. |
+| Unity → ROS | `/lidar` | `sensor_msgs/LaserScan` | Obstacle and sand particle ranges. |
+| Unity → ROS | `/tf` | `sensor_msgs/Imu` | Transform of /gps, /imu, /camera, /lidar. |
 | Unity → ROS | `/joint_states` | `sensor_msgs/JointState` | Physical wheel positions and rotational velocities. |
 
 ### Custom Message Definitions
@@ -128,17 +129,19 @@ The `RosOutput.cs` publishes vehicle feedback at a configurable frequency.
 
 ---
 
-## Sensor Layer Architecture
-
-Each sensor registers its own ROS publisher and can be independently started or stopped by SimulationManager. The architecture relies on configuration parameters and structured flows for data publishing. 
-
-### Runtime Control & Optimization
+### Control & Optimization 
 * Each sensor exposes Begin() and Stop() methods.
 * Methods are called from SimulationManager.cs when requested.
 * The scripts use InvokeRepeating(0, 1/Rate) rather than Update().
 * Fewer calls result in better optimization.
 * Only sensors required for the active scenario need to be enabled.
 * Publish rates are configurable directly from the Unity Editor.
+
+---
+
+## Sensor Layer Architecture
+
+Each sensor registers its own ROS publisher and can be independently started or stopped by SimulationManager. The architecture relies on configuration parameters and structured flows for data publishing. 
 
 ---
 
