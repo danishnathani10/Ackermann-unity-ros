@@ -19,7 +19,7 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
       <h3>📡 Sensor Simulation</h3>
       <img src="Documentation/Gifs/Sandsensor.gif" width="100%" alt="LiDAR sensor simulation">
       <br><br>
-      Real-time LiDAR raycasting and sensor visualization.
+      LiDAR raycasting and sensor visualization.
     </td>
     <td align="center" width="33%">
       <h3>🏜️ Terrain Evaluation</h3>
@@ -77,7 +77,7 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 
 <br><br>
 
-**Ackermann Vehicle Simulation**
+**Ackermann Steering 360°**
 
 </td>
 
