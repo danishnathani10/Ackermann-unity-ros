@@ -179,7 +179,7 @@ source /opt/ros/[DISTRO]/setup.bash
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
-### 3. Add the custom package in Unity
+### 3. Add package from Git URL in Unity
 
 Open:
 
