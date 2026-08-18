@@ -24,9 +24,17 @@ As requested in the assignment parameters, a dedicated `Custom Ground` physics m
   
 These values make the ground slippery and challenging, forcing the physics engine to calculate realistic traction losses as the car climbs up dunes.
 
-[PLACE DESERT SCENE WIDE SCREENSHOT HERE]
+</td>
 
-[PLACE DESERT DRIVING GIF HERE]
+</tr>
+</table>
+
+<tr>
+<td width="100%" align="center" valign="middle">
+
+<img src="Gifs/Dune.gif" width="90%" alt="Obstacle detection using LiDAR">
+
+</td>
 
 ---
 
@@ -77,10 +85,6 @@ We log the entire evaluation run into a folder named `dune1` so we can inspect o
 ros2 bag record -o desert1 /input /feedback /gps /imu /camera /lidar /tf /joint_states
 ```
 
-[PLACE ROS2 ENDPOINT / TERMINAL SCREENSHOT HERE]
-
-[PLACE ROS BAG RECORDING SCREENSHOT HERE]
-
 Once you are done recording, you can review the vehicle's movement and sensor data at any time without booting up Unity. Just run:
 
 ```bash
@@ -103,13 +107,7 @@ ros2 bag info ~/{ROS PROJECT DIR}/dune1
 * ROS 2 input/output scripts.
 * GPS, IMU, Camera, and LiDAR sensors.
 
-[PLACE DESERT TERRAIN UNITY SCREENSHOT HERE]
 
-[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]
-
-[PLACE CUSTOM BLENDER ASSET SCREENSHOT HERE]
-
-[PLACE TEXTURE PAINTING / BLENDER SCREENSHOT HERE]
 
 ---
 
@@ -122,9 +120,7 @@ We placed the evaluation camera at a wide angle that clearly showcases how the v
 * Driving speed and momentum.
 The camera is positioned far enough away to reveal the upcoming terrain details while keeping the vehicle clearly in focus.
 
-[PLACE MAIN DESERT CAMERA ANGLE SCREENSHOT HERE]
 
-[PLACE DESERT CAMERA GIF HERE]
 
 ---
 
@@ -140,11 +136,6 @@ Every core sensor remains active and streams live data as the vehicle traverses 
 * **TF:** Maps out the exact spatial relationships between the vehicle body and sensor lenses.
 * **Joint States:** Publishes real-time wheel spins and suspension compression values.
 
-[PLACE RVIZ DESERT SENSOR OUTPUT SCREENSHOT HERE]
-
-[PLACE DESERT LIDAR OUTPUT SCREENSHOT OR GIF HERE]
-
-[PLACE GPS / IMU / FEEDBACK TERMINAL SCREENSHOT HERE]
 
 Because these streams are perfectly synchronized, this desert test gives us a complete synthetic data capture under realistic off-road driving conditions.
 
