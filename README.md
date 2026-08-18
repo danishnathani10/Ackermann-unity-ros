@@ -179,7 +179,7 @@ source /opt/ros/[DISTRO]/setup.bash
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
-### 3. Install the Package (Recommended Method)
+## 3. Install the Package (Recommended Method)
 
 > **Recommended:** Download the repository as a ZIP file rather than importing it directly using the Git URL, to avoid scene read only issue.
 
@@ -190,7 +190,7 @@ ros2 run ros_tcp_endpoint default_server_endpoint
 3. In Unity, open: Window → Package Manager → + → Add package from disk...
 4. Navigate to the extracted repository and select: **package.json**
 
-### 4. Open any evaluation scene
+## 4. Open any evaluation scene
 
 ```text
 Packages/
