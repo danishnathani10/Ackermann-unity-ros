@@ -1,164 +1,240 @@
-# Sand Synthetic Data Scene
+# ROS Input and Output
 
 ## Overview
 
-The main goal is to create a controlled environment where sand particles are clearly visible to the Camera and actively detected by the LiDAR scanner.
+The main purpose is simple: send driving commands from ROS 2 into Unity, let the vehicle respond using its actual driving and steering physics, and then publish the resulting vehicle state right back to ROS 2.
 
-This scene focuses purely on synthetic data generation rather than vehicle driving or handling. We placed the particle system directly in front of the vehicle's sensors so we could study how the exact same environment gets represented differently through a visual camera image versus a LiDAR point cloud.
+This gives us a complete two-way communication loop:
 
-The complete sensor output was logged into a ROS bag so you can easily replay and inspect the generated data later.
+```text
+       ROS 2 Command
+            ↓
+  /input Topic Source
+            ↓
+ugv_assignment_msgs/Input
+            ↓
+    Unity Subscriber
+            ↓
+    Vehicle Controller
+            ↓
+Throttle / Brake / Steering
+            ↓
+     Vehicle Physics
+            ↓
+Vehicle State Calculation
+            ↓
+ugv_assignment_msgs/Output
+            ↓
+    /feedback Topic
+            ↓
+  ROS 2 Terminal Tools
+```
+
+The scenario uses the custom `ugv_assignment_msgs/Input` and `ugv_assignment_msgs/Output` messages created specifically for this project.
 
 **Evaluation Video**
 
-[PLACE SAND SYNTHETIC DATA YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
+[PLACE ROS INPUT OUTPUT YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
 
 ---
 
 # 1. Objective
 
-This scenario proves that these features work:
-* **Synthetic Camera Data:** Sand particles show up clearly in the simulated camera output.
-* **Synthetic LiDAR Data:** LiDAR rays interact with the particle objects to generate accurate point cloud returns.
-* **Controlled Environment:** The particle system can be fully tested without needing the vehicle to move.
-* **ROS 2 Integration:** Visual camera frames and LiDAR data stream continuously through ROS 2.
-* **Sensor Comparison:** You can analyze how two completely different sensor types view the exact same particle field.
-* **Data Logging:** All sensor outputs are captured into a ROS bag for later playback and analysis.
+The goal of this scenario was to prove that ROS 2 can actively control the Unity vehicle and receive meaningful feedback from the simulation.
 
-Ultimately, this test shows how Unity can be used to generate highly controlled synthetic data that can later be fed directly into ROS 2 tools for processing or machine learning training.
+This scenario validates:
+* **ROS 2 Input:** Successfully receiving throttle, brake, and steering commands from ROS 2.
+* **Vehicle Control:** Seamlessly applying those commands to the actual Unity vehicle.
+* **Ackermann Steering:** Converting a single steering command into the correct independent front wheel angles.
+* **Vehicle Physics:** Allowing the Rigidbody, wheels, and suspension components to react naturally.
+* **ROS 2 Output:** Sending the resulting vehicle state back to ROS 2.
+* **Live Feedback:** Monitoring velocity, steering values, and vehicle state parameters in real time.
+* **Two-Way Communication:** Proving that data flows successfully in both directions.
 
-[PLACE SAND SCENE WIDE SCREENSHOT HERE]
+The important part of this scenario is that the output is not simply a copy of the input command. The input controls the vehicle, the Unity physics system updates the vehicle state over terrain, and the resulting state is then published back to ROS 2.
 
-[PLACE SAND PARTICLE SIMULATION GIF HERE]
+[PLACE ROS INPUT TO UNITY SCREENSHOT HERE]
+
+[PLACE UNITY VEHICLE RESPONSE GIF HERE]
 
 ---
 
 # 2. ROS Initialization and ROS Bag Creation
 
-Before launching the scene in Unity, we need to spin up our ROS 2 environment and connect the network bridge. Open your terminal and run:
+Before launching Unity, we need to spin up our ROS 2 environment and launch the network handshake bridge. Open your terminal and run:
 
 ```bash
-# Set up your ROS 2 environment
+# Set up your ROS 2 Humble environment
 source /opt/ros/humble/setup.bash
 
 # Start the connection bridge between Unity and ROS 2
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
+Once Unity starts and connects successfully, the vehicle begins subscribing to control messages and publishing feedback.
+
+[PLACE ROS TCP ENDPOINT TERMINAL SCREENSHOT HERE]
+
 ### Checking Active Topics
-Once Unity links up with the bridge, the active sensor publishers will automatically start streaming data. To check if the topics are running, open a new terminal window and list them:
+To confirm that the Unity vehicle has successfully joined the ROS graph, open a new terminal window and look at the active nodes:
 
 ```bash
 ros2 topic list
 ```
 
-If you want to look at the raw Camera frames and LiDAR data points streaming across individual topics in real-time, use the `echo` command:
+The main channels for this scenario should include the vehicle input and feedback topics. You can inspect the live feedback data values using the `echo` command:
 
 ```bash
-# Watch the live camera metadata stream
-ros2 topic echo /camera
-
-# Monitor incoming LiDAR scanning data
-ros2 topic echo /lidar
+# Monitor incoming vehicle state and telemetry data
+ros2 topic echo /feedback
 ```
 
-You can check that the data is publishing at the correct rates by measuring their topic frequencies with:
+You can also check whether Unity is actively publishing feedback at the proper speed by running:
 
 ```bash
-ros2 topic hz /camera
-ros2 topic hz /lidar
+ros2 topic hz /feedback
 ```
+
+[PLACE ROS TOPIC LIST SCREENSHOT HERE]
 
 ### Recording the Session
-We log the entire session into a folder named `sand1` so we can inspect the synthetic data later. Since the vehicle doesn't need to move for this evaluation, the recording focuses purely on the data coming off the sensors:
+We log the entire communication session into a ROS bag named `ros_input_output1` so we can inspect both sides of the loop later:
 
 ```bash
-ros2 bag record -o sand1 /camera /lidar
+ros2 bag record -o ros_input_output1 /input /feedback /tf /joint_states
 ```
-
-[PLACE ROS2 TERMINAL / ENDPOINT SCREENSHOT HERE]
 
 [PLACE ROS BAG RECORDING SCREENSHOT HERE]
 
-Once you are done recording, you can review the exact Camera and LiDAR outputs at any time without booting up Unity. Just run:
+Once recorded, the communication session can be replayed at any time without running the Unity simulation. Just use:
 
 ```bash
-ros2 bag info ~/ugv_ros2_ws/sand1
+ros2 bag play ros_input_output1
 ```
+
+This makes it easy to review exactly which commands were sent and how the Unity vehicle responded under load.
 
 ---
 
 # 3. Things Used and Created
 
-### Synthetic Particle Environment
-* A dedicated Unity testing scene configured specifically for sand data generation.
-* Suspended sand particles placed directly inside the active sensor field of view.
-* Balanced placement so that both the Camera and the LiDAR scan the exact same space.
-* Zero vehicle movement required, ensuring a perfectly controlled baseline.
+### Custom ROS 2 Messages
+This scenario relies on custom ROS 2 messages built specifically for controlling and monitoring our UGV.
 
-### Sensor Setup
-The two primary modules under review are:
-* **Camera:** Captures the exact visual appearance, color, and density of the floating sand particles.
-* **LiDAR:** Sends out rays to detect particle boundaries whenever they enter the configured target layers.
+#### Vehicle Input (`ugv_assignment_msgs/Input`)
+The Unity vehicle listens to this topic to intercept incoming control packets. It contains:
+* `float64 throttle` — Controls vehicle acceleration.
+* `float64 brake` — Applies physical braking force.
+* `float64 steering_angle` — Controls the heading direction of the front wheels.
 
-The remaining vehicle sensors (`GPS`, `IMU`, `TF`, and `Joint States`) stay completely active and accessible in the background.
+#### Vehicle Output (`ugv_assignment_msgs/Output`)
+Unity bundles the vehicle's physical reactions and broadcasts them back to ROS using this topic. It contains:
+* `string state` — Current operational status of the vehicle.
+* `float64 linear_velocity` —  forward speed.
+* `float64 angular_velocity` — Current rotational speed.
+* `float64 front_left_steering_angle` — Exact angle of the front left tire.
+* `float64 front_right_steering_angle` — Exact angle of the front right tire.
 
-### LiDAR Debug Visualization
-We rely heavily on Unity's debug rays to watch exactly how the laser beams interact with the sand volume. This debug overlay makes it easy to confirm:
-* Whether individual LiDAR rays are hitting the floating particles.
-* Whether the particle objects are assigned to the correct physics layer.
+### Unity Vehicle Setup
+* Direct network link via the ROS-TCP Connector script.
+* Dedicated subscriber node to process incoming drive variables.
+* Active feedback publisher node to send live physics metrics back out.
+* Embedded Ackermann math blocks to split wheel tracking.
+* Fully physics-driven Rigidbody car body with active four-wheel suspension.
 
-[PLACE UNITY SAND PARTICLE SCENE SCREENSHOT HERE]
+[PLACE UNITY VEHICLE ROS COMPONENT SCREENSHOT HERE]
 
-[PLACE LIDAR DEBUG RAYS SCREENSHOT HERE]
-
-[PLACE PARTICLE SYSTEM INSPECTOR SCREENSHOT HERE]
-
----
-
-#4. Active Sensors
-
-The core focus of this entire test is the synchronized data coming from the Camera and LiDAR modules:
-
-* **Camera:** Broadcasts a synthetic image feed showing the floating sand. This verifies that visual distortions caused by sandstorms are accurately captured by the sensor.
-* **LiDAR:** Scans the air volume and generates point cloud returns. The sand particles are specifically configured to reflect the laser beams, forcing them to show up as physical obstructions in the LiDAR output data.
-* **GPS & IMU:** Stay turned on and broadcast constant, stationary baseline data.
-* **TF & Joint States:** Continually maintain the spatial coordinate tree and static wheel states so the sensor frame relationships remain perfectly accurate.
-
-[PLACE RVIZ SENSOR OUTPUT SCREENSHOT HERE]
-
-[PLACE LIDAR PARTICLE OUTPUT SCREENSHOT HERE]
-
-[PLACE CAMERA SENSOR OUTPUT SCREENSHOT HERE]
-
-The most critical takeaway here is that both sensors look at the exact same sand cloud and translate it into two completely unique, highly realistic data types simultaneously.
+[PLACE CUSTOM MESSAGE / UNITY INSPECTOR SCREENSHOT HERE]
 
 ---
 
-# 5. Optimization
+# 4. Sending Control Commands
 
-We intentionally kept this scene highly optimized. The goal was to build a clean testing loop for particle rendering and laser raycasts without overloading the system with massive environments.
+The vehicle receives all driving commands through the `/input` topic. 
 
-To guarantee a stable framerate and clean data logging, we used these performance guidelines:
-* Only essential particle systems and sensor rigs are active in the hierarchy.
-* Particle counts are strictly capped to prevent rendering lag.
-* The sand volume is tightly confined only to the area directly visible to the sensor lenses.
-* Camera and LiDAR update rates are kept at controlled, steady intervals instead of firing haphazardly on every single engine frame.
-* LiDAR raycast detection is strictly limited to the required object layers to minimize processing overhead.
-* We completely left out heavy terrain assets and decorative scenery.
+### Message Specification
+* **Message Type:** `ugv_assignment_msgs/msg/Input`
+* **Available Parameters:** `throttle`, `brake`, `steering_angle`
+
+To send a simple forward movement command from your terminal, run:
+
+```bash
+ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 50.0, brake: 0.0, steering_angle: 0.0}"
+```
+
+To test how the vehicle handles a basic turn, use this command:
+
+```bash
+ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 30.0, brake: 0.0, steering_angle: 0.3}"
+```
+
+[PLACE INPUT COMMAND TO VEHICLE RESPONSE GIF HERE]
 
 ---
 
-# 6. Challenges
+# 5. Vehicle Feedback
 
-* **Making Particles "Solid" to LiDAR:** A particle can easily be seen by a regular camera in Unity, but standard raycast based LiDAR systems will slice right through it undetected. We had to spend extra time configuring the particle collisions so that the laser beams would hit them and register a valid return distance.
-* **Layer Configuration:** We had to ensure every floating element lived on a dedicated layer that matched the LiDAR sensor's target detection mask.
-* **Balancing Particle Density:** Finding the right balance was tough. If we used too few particles, the sand didn't show up in the sensor logs. If we used too many, the camera view became a solid wall of color and bogged down the rendering frame rate.
-* **Sensor Positioning:** The sand particles had to be positioned precisely at the intersection point where the Camera's field of view overlapped with the LiDAR's scanning plane.
-* **Validating Output:** We had to continually cross reference live debug rays with RViz2 point clouds to confirm that the sand was actually registering as data points, rather than just looking pretty on the Unity screen.
+Once the Unity engine finishes processing a physics update, it collects the vehicle's actual state and streams it back to ROS 2.
+
+This step is critical because it tells ROS 2 what the vehicle is **actually doing** in the environment rather than what it was **told to do**. For instance, sending a single steering value to the vehicle results in two completely separate wheel angles in the output log, demonstrating that our Ackermann link is actively working.
+
+[PLACE LIVE FEEDBACK TERMINAL SCREENSHOT HERE]
+
+[PLACE LEFT RIGHT STEERING ANGLE OUTPUT SCREENSHOT HERE]
 
 ---
 
-# 8. Future Improvements
-* Adding variable particle density presets to simulate everything from light morning haze to blinding desert sandstorms.
+# 6. Active ROS 2 Data Channels
 
+You can easily audit or trace our entire control loop by monitoring these core topics:
+
+| Direction | Topic | Purpose |
+| :--- | :--- | :--- |
+| **ROS 2 → Unity** | `/input` | Sends throttle, brake, and steering commands |
+| **Unity → ROS 2** | `/feedback` | Publishes vehicle state and motion feedback |
+| **Unity → ROS 2** | `/tf` | Publishes vehicle and sensor transforms |
+| **Unity → ROS 2** | `/joint_states` | Publishes vehicle wheel and joint information |
+
+[PLACE RVIZ / TERMINAL / TOPIC GRAPH SCREENSHOT HERE]
+
+This centralized communication loop operates smoothly alongside our existing sensor pipelines. This means you can actively steer the car via remote ROS commands while simultaneously streaming fresh GPS, IMU, Camera, and LiDAR packets.
+
+---
+
+# 7. Optimization
+
+We optimized our communication scripts to prevent network traffic from clogging Unity's main rendering frames.
+
+To keep data pipelines fast and light:
+* Incoming control messages are processed only when ROS 2 pushes them.
+* Telemetry updates use controlled time intervals (`InvokeRepeating`) instead of running every frame inside the main `Update()` block.
+* The vehicle physics engine calculates tire grip and suspension loads completely independently.
+* The feedback script strictly limits its focus to the specific variables demanded by our custom message structure.
+
+Enforcing these strict update rates cuts down on unnecessary network overhead while providing highly accurate status summaries. This optimization is crucial since Unity is simultaneously running wheel colliders, rendering visual frames, computing LiDAR raycasts, and broadcasting transform arrays.
+
+---
+
+# 8. Challenges
+
+* **Matching ROS Ranges with Vehicle Logic:** We had to spend extra time scaling the incoming values from ROS 2 so they matched the exact ranges expected by our vehicle's torque and braking controllers.
+* **Ackermann Steering Translation:** Mapping a generic steering input value so it drives the front left and front right wheel links correctly without introducing jerky motion or physics errors was a significant technical challenge.
+* **Real Feedback vs Input Echoing:** The output calculations had to extract the true simulated vehicle state rather than lazily bouncing the original input metrics back out to the ROS node.
+* **Publishing Traffic Timing:** Broadcasts had to be throttled to clear out potential socket congestion while staying synchronized across systems.
+* **Full-Loop Hardware Coordination:** Synchronizing multi-window linux terminals alongside Unity scene timelines required strict runtime connection setups to guarantee zero frame drops.
+
+---
+
+# 9. Future Improvements
+
+* Injecting detailed runtime diagnostic fields directly into the output message stack.
+* Create automated tests that send predefined control commands and verify the resulting vehicle state.
+
+---
+
+# 10. Key Takeaways
+
+* How to receive custom ROS 2 messages inside Unity.
+* How to convert ROS control values into vehicle throttle, brake, and steering.
+* Create automated tests that send predefined control commands and verify the resulting vehicle state.
   
