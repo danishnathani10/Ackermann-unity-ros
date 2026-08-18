@@ -11,7 +11,7 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
   <tr>
     <td align="center" width="33%">
       <h3>🚙 Vehicle & Control</h3>
-      <img src="Documentation/Gifs/CarObstacle2.gif" width="100%" alt="Vehicle navigating obstacle course">
+      <img src="Documentation/Gifs/Obstaclez.gif" width="100%" alt="Vehicle navigating obstacle course">
       <br><br>
       ROS 2 controlled Ackermann vehicle navigating obstacles.
     </td>
