@@ -140,7 +140,7 @@ public class TfPublisher : MonoBehaviour
         int seconds = Mathf.FloorToInt(currentTime);
         uint nanoseconds = (uint)((currentTime - seconds) * 1000000000);
 
-        return new TimeMsg(seconds, nanoseconds);
+        return new TimeMsg((uint)seconds, nanoseconds);
     }
 
 
