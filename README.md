@@ -171,35 +171,35 @@ In your Unity project:
 
 ```text
 https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robotics.ros-tcp-connector
-
-### 2. Start the ROS endpoint in Linux
+```
+## 2. Start the ROS endpoint in Linux
 
 ```bash
 source /opt/ros/[DISTRO]/setup.bash
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
-### 3. Add package from Git URL in Unity
+### 3. Install the Package (Recommended Method)
 
-Open:
+> **Recommended:** Download the repository as a ZIP file rather than importing it directly using the Git URL, to avoid scene read only issue.
 
-```text
-Window → Package Manager → + → Add package from current repo's Git URL
-```
-
-Add:
-
-```text
-[REPOSITORY-URL]
-```
+1. Download the repository as a ZIP.
+   ```text
+   GitHub → Code → Download ZIP
+2. Extract the ZIP to any location on your computer. **Extract the ZIP**.
+3. In Unity, open: Window → Package Manager → + → Add package from disk...
+4. Navigate to the extracted repository and select: **package.json**
 
 ### 4. Open any evaluation scene
 
 ```text
-Scenes/
-├── ObstacleScene
-├── DesertScene
-└── SandParticleScene
+Packages/
+└── TerraSim Assignment/
+    └── Runtime/
+        └── Scene/
+            ├── ObstacleScene
+            ├── DuneScene
+            └── SandScene
 ```
 
 Start the ROS endpoint, open the required scene, and press **Play**.
