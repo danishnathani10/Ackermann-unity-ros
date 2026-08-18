@@ -5,7 +5,6 @@
   "description": "Package to download a Unity and ROS 2  UGV simulation package featuring Ackermann vehicle control, sensor simulation, ROS communication, and evaluation scenarios.",
   "unity": "6000.1",
   "keywords": [
-    "ackermann",
     "unity",
     "ros2",
     "robotics",
