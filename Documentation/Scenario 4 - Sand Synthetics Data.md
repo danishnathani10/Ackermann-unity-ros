@@ -26,10 +26,17 @@ This scenario proves that these features work:
 * **Data Logging:** All sensor outputs are captured into a ROS bag for later playback and analysis.
 
 Ultimately, this test shows how Unity can be used to generate highly controlled synthetic data that can later be fed directly into ROS 2 tools for processing or machine learning training.
+</td>
 
-[PLACE SAND SCENE WIDE SCREENSHOT HERE]
+</tr>
+</table>
 
-[PLACE SAND PARTICLE SIMULATION GIF HERE]
+<tr>
+<td width="100%" align="center" valign="middle">
+
+<img src="Gifs/Sandsensor.gif" width="90%" alt="Obstacle detection using LiDAR">
+
+</td>
 
 ---
 
@@ -76,10 +83,6 @@ We log the entire session into a folder named `sand1` so we can inspect the synt
 ros2 bag record -o sand1 /camera /lidar
 ```
 
-[PLACE ROS2 TERMINAL / ENDPOINT SCREENSHOT HERE]
-
-[PLACE ROS BAG RECORDING SCREENSHOT HERE]
-
 Once you are done recording, you can review the exact Camera and LiDAR outputs at any time without booting up Unity. Just run:
 
 ```bash
@@ -108,11 +111,7 @@ We rely heavily on Unity's debug rays to watch exactly how the laser beams inter
 * Whether individual LiDAR rays are hitting the floating particles.
 * Whether the particle objects are assigned to the correct physics layer.
 
-[PLACE UNITY SAND PARTICLE SCENE SCREENSHOT HERE]
-
-[PLACE LIDAR DEBUG RAYS SCREENSHOT HERE]
-
-[PLACE PARTICLE SYSTEM INSPECTOR SCREENSHOT HERE]
+ [![Lidar in RViz](Gifs/lidarrviz.png)]
 
 ---
 
@@ -125,11 +124,8 @@ The core focus of this entire test is the synchronized data coming from the Came
 * **GPS & IMU:** Stay turned on and broadcast constant, stationary baseline data.
 * **TF & Joint States:** Continually maintain the spatial coordinate tree and static wheel states so the sensor frame relationships remain perfectly accurate.
 
-[PLACE RVIZ SENSOR OUTPUT SCREENSHOT HERE]
 
-[PLACE LIDAR PARTICLE OUTPUT SCREENSHOT HERE]
-
-[PLACE CAMERA SENSOR OUTPUT SCREENSHOT HERE]
+ [![Camera Image & Lidar in RViz](Gifs/CameraRviz.png)]
 
 The most critical takeaway here is that both sensors look at the exact same sand cloud and translate it into two completely unique, highly realistic data types simultaneously.
 
