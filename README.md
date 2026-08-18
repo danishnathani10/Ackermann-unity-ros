@@ -86,7 +86,7 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 <tr>
 <td width="100%" align="center" valign="middle">
 
-<img src="Gifs/LidarObstacles.gif" width="70%" alt="Obstacle detection using LiDAR">
+<img src="Documentation/Gifs/LidarObstacles.gif" width="70%" alt="Obstacle detection using LiDAR">
 
 <br><br>
 
