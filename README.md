@@ -10,6 +10,11 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
 | Vehicle & Control                       | Sensor Simulation                           | Terrain Evaluation          |
 | --------------------------------------- | ------------------------------------------- | --------------------------- |
 | **[PLACE OBSTACLE / VEHICLE GIF HERE]** | **[PLACE LIDAR OR SENSOR SCREENSHOT HERE]** | **[PLACE DESERT GIF HERE]** |
+<p align="center">
+  <img src="Documentation/Gifs/Carobstacle.gif" width="45%">
+  <img src="Documentation/Gifs/Sand sensor.gif" width="45%">
+  <img src="Documentation/Gifs/Dune.gif" width="45%">
+</p>
 
 The simulation combines a ROS2-controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
 
