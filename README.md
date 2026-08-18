@@ -17,7 +17,7 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
     </td>
     <td align="center" width="33%">
       <h3>📡 Sensor Simulation</h3>
-      <img src="Documentation/Gifs/Sand sensor.gif" width="100%" alt="LiDAR sensor simulation">
+      <img src="Documentation/Gifs/Sandsensor.gif" width="100%" alt="LiDAR sensor simulation">
       <br><br>
       Real-time LiDAR raycasting and sensor visualization.
     </td>
@@ -243,79 +243,59 @@ Start the ROS endpoint, open the required scene, and press **Play**.
 
 # Bonus Point - Custom Obstacle Assets
 
-Some of the obstacle assets used in the Obstacle scene were modelled and textured specifically for this project using blender.
-The original Blender source file is included as supporting evidence:
-
-```text
-ROSTII.blend
-```
-The Blender source contains the original modelling and texture work used to create the custom obstacle assets.
-
-**[PLACE BLENDER VIEWPORT SCREENSHOT HERE]**
-
-**[PLACE WIREFRAME / EDIT MODE SCREENSHOT HERE]**
-
-**[PLACE TEXTURE PAINTING SCREENSHOT HERE]**
-
-The unique texture painting and source `.blend` file are included to demonstrate that these assets were created and edited for this project rather than only imported as finished models.
-
-The resulting assets are used in the Unity obstacle evaluation scene:
-
-**[PLACE UNITY OBSTACLE SCENE SCREENSHOT HERE]**
-
-## 🎨 Bonus Point — Custom Obstacle Assets
-
-The obstacle assets used in the **Obstacle Scene** were modelled and textured specifically for this project using Blender. The original Blender source file is included as supporting evidence.
-
+The obstacle assets used in the Obstacle scene were modelled and textured specifically for this project using blender.
+The original Blender source file is included as supporting evidence.
 > `ROSTII.blend`
 
-The workflow below shows the progression from modelling and editing in Blender to the final assets used inside the Unity simulation.
-
 <table>
+
 <tr>
+<td width="50%" align="center">
 
-<td width="25%" align="center">
+<h3>1. Modelling</h3>
 
-### 1. Modelling
-
-<img src="Documentation/Images/blender.gif" width="100%" alt="Blender obstacle modelling">
+<img src="Documentation/Gifs/Blender.gif" width="90%" alt="Blender obstacle modelling">
 
 Initial obstacle asset creation and modelling in Blender.
 
 </td>
 
-<td width="25%" align="center">
+<td width="50%" align="center">
 
-### 2. Edit Mode
+<h3>2. Edit Mode</h3>
 
-<img src="Documentation/Images/Blender Writeframe.png" width="100%" alt="Blender wireframe view">
+<img src="Documentation/Gifs/BlenderWriteframe.png" width="90%" alt="Blender wireframe view">
 
 Geometry and mesh editing used to shape the obstacle assets.
 
 </td>
+</tr>
 
-<td width="25%" align="center">
+<tr>
+<td width="50%" align="center">
 
-### 3. Texture Work
+<h3>3. Texture Work</h3>
 
-<img src="Documentation/Images/Blender view.png" width="100%" alt="Blender texture editing">
+<img src="Documentation/Gifs/Blenderview.png" width="90%" alt="Blender texture editing">
 
 Custom texture and material work applied to the obstacle assets.
 
 </td>
 
-<td width="25%" align="center">
+<td width="50%" align="center">
 
-### 4. Unity Integration
+<h3>4. Unity Integration</h3>
 
-<img src="Documentation/Images/PropsInUnity.png" width="100%" alt="Custom obstacle props in Unity">
+<img src="Documentation/Gifs/PropsInUnity.png" width="90%" alt="Custom obstacle props in Unity">
 
 The finished assets integrated into the Unity obstacle evaluation scene.
 
 </td>
-
 </tr>
+
 </table>
+
+The unique texture painting and source `.blend` file are included to demonstrate that these assets were created and edited for this project rather than only imported as finished models.
 
 
 ---
