@@ -331,7 +331,7 @@ Each evaluation scenario is accompanied by a video recording and ROS bag data.
 
 * [Deliverable Videos](https://drive.google.com/drive/folders/1q0VKqjq1ESsRNiyFxvO75CF-hyM2OP09?usp=drive_link)
 * [ROS Bag Recording](https://drive.google.com/drive/folders/1_cd8MHfxg_wbpx2z07jcI_G5zWwmRzHg?usp=drive_link)
-* [Document]((https://docs.google.com/document/d/175V-mASgo41eBvmAoTRWa6eO7YD5vrKG/edit?usp=drive_link&ouid=116760820206679628994&rtpof=true&sd=true)
+* [Document](https://docs.google.com/document/d/175V-mASgo41eBvmAoTRWa6eO7YD5vrKG/edit?usp=drive_link&ouid=116760820206679628994&rtpof=true&sd=true)
 
 ---
 
