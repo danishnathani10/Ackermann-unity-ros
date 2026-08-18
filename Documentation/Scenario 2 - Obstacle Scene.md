@@ -25,9 +25,6 @@ This scenario proves that the following features work seamlessly together:
 * **Sensor Streams:** Constant updates from the GPS, IMU, Camera, and LiDAR sensors.
 * **Data Logging:** Complete ROS bag recordings for later playback and analysis.
 
-[PLACE OBSTACLE SCENE WIDE SCREENSHOT HERE]
-
-[PLACE OBSTACLE NAVIGATION GIF HERE]
 
 ---
 
@@ -59,9 +56,6 @@ We log the entire run into a ros bag named `obstacle1` so we can inspect the dat
 ros2 bag record -o obstacle1 /input /feedback /gps /imu /camera /lidar /tf /joint_states
 ```
 
-[PLACE ROS2 TERMINAL / ENDPOINT SCREENSHOT HERE]
-
-[PLACE ROS BAG RECORDING SCREENSHOT HERE]
 
 Once finished, this recorded data package can be replayed at any time to verify sensor accuracy or analyze the path taken.
 
@@ -85,9 +79,7 @@ Once finished, this recorded data package can be replayed at any time to verify 
 * **Control Inputs:** The vehicle listens for driving commands via the `ugv_assignment_msgs/Input` format.
 * **Feedback Output:** The vehicle replies with real time updates using the `ugv_assignment_msgs/Output` format.
 
-[PLACE UNITY SCENE HIERARCHY SCREENSHOT HERE]
 
-[PLACE VEHICLE PREFAB / INSPECTOR SCREENSHOT HERE]
 
 ---
 
@@ -99,9 +91,6 @@ We positioned the main evaluation camera to give a perfectly clear view of the a
 * Physical suspension compression as the weight shifts.
 * Clearances between the vehicle body and the obstacle walls.
 
-[PLACE MAIN CAMERA ANGLE SCREENSHOT HERE]
-
-[PLACE VIDEO / GIF FROM FINAL CAMERA ANGLE HERE]
 
 ---
 
@@ -116,9 +105,20 @@ Every single sensor node stays turned on and publishes data continuously as the 
 * **Vehicle Feedback:** Broadcasts actual structural car state, velocity, and steering angle.
 * **TF & Joint States:** Continually maintains the spatial transform tree and wheel spin states.
 
-[PLACE RVIZ / ROS TOPIC / SENSOR OUTPUT SCREENSHOT HERE]
+</td>
 
-[PLACE LIDAR OUTPUT SCREENSHOT OR GIF HERE]
+</tr>
+</table>
+
+<tr>
+<td width="100%" align="center" valign="middle">
+
+<img src="Gifs/LidarObstacles.gif" width="90%" alt="Obstacle detection using LiDAR">
+
+<div align="center">
+<b>Obstacle detection using LiDAR</b>
+</div>
+</td>
 
 Because these streams run simultaneously with the simulation, the entire obstacle run can be reviewed visually inside RViz by playing back the recorded ROS bag.
 
