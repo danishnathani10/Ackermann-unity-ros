@@ -7,16 +7,30 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
 
 # At a Glance
 
-| Vehicle & Control                       | Sensor Simulation                           | Terrain Evaluation          |
-| --------------------------------------- | ------------------------------------------- | --------------------------- |
-| **[PLACE OBSTACLE / VEHICLE GIF HERE]** | **[PLACE LIDAR OR SENSOR SCREENSHOT HERE]** | **[PLACE DESERT GIF HERE]** |
-<p align="center">
-  <img src="Documentation/Gifs/Carobstacle.gif" width="45%">
-  <img src="Documentation/Gifs/Sand sensor.gif" width="45%">
-  <img src="Documentation/Gifs/Dune.gif" width="45%">
-</p>
+<table>
+  <tr>
+    <td align="center" width="33%">
+      <h3>🚙 Vehicle & Control</h3>
+      <img src="Documentation/Gifs/CarObstacle.gif" width="100%" alt="Vehicle navigating obstacle course">
+      <br><br>
+      ROS 2 controlled Ackermann vehicle navigating obstacles.
+    </td>
+    <td align="center" width="33%">
+      <h3>📡 Sensor Simulation</h3>
+      <img src="Documentation/Gifs/Sand sensor.gif" width="100%" alt="LiDAR sensor simulation">
+      <br><br>
+      Real-time LiDAR raycasting and sensor visualization.
+    </td>
+    <td align="center" width="33%">
+      <h3>🏜️ Terrain Evaluation</h3>
+      <img src="Documentation/Gifs/Dune.gif" width="100%" alt="Desert terrain evaluation">
+      <br><br>
+      Vehicle evaluation across challenging desert terrain.
+    </td>
+  </tr>
+</table>
 
-The simulation combines a ROS2-controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
+The simulation combines a ROS2 controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
 
 
 ---
@@ -248,6 +262,60 @@ The unique texture painting and source `.blend` file are included to demonstrate
 The resulting assets are used in the Unity obstacle evaluation scene:
 
 **[PLACE UNITY OBSTACLE SCENE SCREENSHOT HERE]**
+
+## 🎨 Bonus Point — Custom Obstacle Assets
+
+The obstacle assets used in the **Obstacle Scene** were modelled and textured specifically for this project using Blender. The original Blender source file is included as supporting evidence.
+
+> `ROSTII.blend`
+
+The workflow below shows the progression from modelling and editing in Blender to the final assets used inside the Unity simulation.
+
+<table>
+<tr>
+
+<td width="25%" align="center">
+
+### 1. Modelling
+
+<img src="Documentation/Images/blender.gif" width="100%" alt="Blender obstacle modelling">
+
+Initial obstacle asset creation and modelling in Blender.
+
+</td>
+
+<td width="25%" align="center">
+
+### 2. Edit Mode
+
+<img src="Documentation/Images/Blender Writeframe.png" width="100%" alt="Blender wireframe view">
+
+Geometry and mesh editing used to shape the obstacle assets.
+
+</td>
+
+<td width="25%" align="center">
+
+### 3. Texture Work
+
+<img src="Documentation/Images/Blender view.png" width="100%" alt="Blender texture editing">
+
+Custom texture and material work applied to the obstacle assets.
+
+</td>
+
+<td width="25%" align="center">
+
+### 4. Unity Integration
+
+<img src="Documentation/Images/PropsInUnity.png" width="100%" alt="Custom obstacle props in Unity">
+
+The finished assets integrated into the Unity obstacle evaluation scene.
+
+</td>
+
+</tr>
+</table>
 
 
 ---
