@@ -51,49 +51,7 @@ The simulation combines a ROS2-controlled vehicle with synthetic sensor publishi
 
 The package includes dedicated scenes covering the evaluation requirements.
 
-### 01 — Obstacle Course
-
-**[PLACE OBSTACLE COURSE GIF HERE]**
-
-A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
-
-**[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
-
----
-
-### 02 — Desert Driving
-
-**[PLACE DESERT / DUNE GIF HERE]**
-
-The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity target of **8 m/s**.
-
-**[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
-
-The terrain uses the following physics material:
-
-```text
-Dynamic Friction: 0.3
-Static Friction: 0.4
-Bounciness: 0.2
-Friction Combine: Minimum
-Bounce Combine: Average
-```
-
-**[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]**
-
----
-
-### 03 — Sand Synthetic Data
-
-Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
-
-| Camera                                     | LiDAR                                     |
-| ------------------------------------------ | ----------------------------------------- |
-| **[PLACE CAMERA PARTICLE IMAGE/GIF HERE]** | **[PLACE LIDAR PARTICLE IMAGE/GIF HERE]** |
-
-Vehicle movement is not required for this scene. The focus is on how the particles appear in the generated sensor outputs.
-
-### 04 — ROS Input & Vehicle Feedback
+### 01 — ROS Input & Vehicle Feedback
 
 This demonstration shows the complete ROS2 control and feedback loop.
 
@@ -138,6 +96,48 @@ float64 front_right_steering_angle   # radians
 🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](PLACE_ROS_INPUT_OUTPUT_YOUTUBE_LINK_HERE)**
 
 ---
+
+### 02 — Obstacle Course
+
+**[PLACE OBSTACLE COURSE GIF HERE]**
+
+A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
+
+**[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
+
+---
+
+### 03 — Desert Driving
+
+**[PLACE DESERT / DUNE GIF HERE]**
+
+The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity target of **8 m/s**.
+
+**[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
+
+The terrain uses the following physics material:
+
+```text
+Dynamic Friction: 0.3
+Static Friction: 0.4
+Bounciness: 0.2
+Friction Combine: Minimum
+Bounce Combine: Average
+```
+
+**[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]**
+
+---
+
+### 04 — Sand Synthetic Data
+
+Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
+
+| Camera                                     | LiDAR                                     |
+| ------------------------------------------ | ----------------------------------------- |
+| **[PLACE CAMERA PARTICLE IMAGE/GIF HERE]** | **[PLACE LIDAR PARTICLE IMAGE/GIF HERE]** |
+
+Vehicle movement is not required for this scene. The focus is on how the particles appear in the generated sensor outputs.
 
 ---
 
@@ -252,6 +252,19 @@ Each evaluation scenario is accompanied by a video recording and ROS bag data.
 
 ---
 
+# Key Takeaways
+
+This project gave me experience beyond just Unity. It helped connect 3D simulation with robotics tools and workflows.
+Some of the biggest things learned were:
+
+* **Working with Linux and WSL:** Setting up and using Ubuntu through Windows Subsystem for Linux (WSL), running ROS 2 commands, managing packages, workspaces, and debugging communication between Windows and Linux.
+* **Robotics Sensor Simulation:** Learning how GPS, IMU, Camera, LiDAR, TF, and Joint States can be generated from a simulated vehicle.
+* **ROS Bags:** Learning how to record, replay, and verify simulation data without having to run the complete Unity scene again.
+* **Debugging Complex Systems:** The toughest part was making multiple systems work together at the same time — Unity physics, ROS communication, custom messages, sensors, terrain, and data publishing.
+
+Personally, a huge level up in terms of knowledge, debugging and problem solving.
+
+---
 
 # Documentation
 
