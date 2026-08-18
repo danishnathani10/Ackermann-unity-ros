@@ -297,16 +297,6 @@ The finished assets integrated into the Unity obstacle evaluation scene.
 
 The unique texture painting and source `.blend` file are included to demonstrate that these assets were created and edited for this project rather than only imported as finished models.
 
-
----
-
-# Downloading the Recordings & ROS Bags
-
-Each evaluation scenario is accompanied by a video recording and ROS bag data.
-
-* [Evaluation Videos](Documentation~/Evaluation.md)
-* [ROS Bag Recording and Playback](Documentation~/ROS-Bags.md)
-
 ---
 
 # Key Takeaways
@@ -331,6 +321,17 @@ Personally, a huge level up in terms of knowledge, debugging and problem solving
 * [Scenario 2 - Obstacle Scene](Documentation/Scenario%202%20-%20Obstacle%20Scene.md)
 * [Scenario 3 - Desert Scene](Documentation/Scenario%203%20-%20Desert%20Scene.md)
 * [Scenario 4 - Sand Synthetic Data](Documentation/Scenario%204%20-%20Sand%20Synthetics%20Data.md)
+
+---
+
+
+# Downloading the Recordings & ROS Bags
+
+Each evaluation scenario is accompanied by a video recording and ROS bag data.
+
+* [Deliverable Videos](https://drive.google.com/drive/folders/1q0VKqjq1ESsRNiyFxvO75CF-hyM2OP09?usp=drive_link)
+* [ROS Bag Recording](https://drive.google.com/drive/folders/1_cd8MHfxg_wbpx2z07jcI_G5zWwmRzHg?usp=drive_link)
+* [Document]((https://docs.google.com/document/d/175V-mASgo41eBvmAoTRWa6eO7YD5vrKG/edit?usp=drive_link&ouid=116760820206679628994&rtpof=true&sd=true)
 
 ---
 
