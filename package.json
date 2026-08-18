@@ -5,11 +5,12 @@
   "description": "Package to download a Unity and ROS 2  UGV simulation featuring Ackermann vehicle control, sensor simulation, ROS communication, and evaluation scenarios.",
   "unity": "6000.1",
   "samples": [
-  {
-    "displayName": "TerraSim Scenes",
-    "description": "Dune, Obstacle and Sand simulation scenes.",
-    "path": "Samples~/Scenes"
-  }],
+    {
+      "displayName": "TerraSim Scenes",
+      "description": "Dune, Obstacle and Sand simulation scenes.",
+      "path": "Samples~/Scene"
+    }
+  ],
   "keywords": [
     "unity",
     "ros2",
@@ -21,5 +22,6 @@
   ],
   "author": {
     "name": "Danish Nathani"
-  }
+  },
+  "_fingerprint": "b4f78c40ba19e7ce621d7ef272d0e9b30cef6a43"
 }
