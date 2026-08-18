@@ -1,195 +1,328 @@
-# UGV Unity Simulator
-
-A simulation package that connects an Ackermann steered vehicle made in Unity to ROS2 for vehicle control, synthetic sensor generation, and evaluation data recording.
-
-## Tech Stack
-**Unity 3D • ROS2 • Ackermann Steering • GPS • IMU • Camera • LiDAR • RViz • OBS Studio • DaVinci Resolve**
-
----
-
-
-# At a Glance
-
-| Vehicle & Control                       | Sensor Simulation                           | Terrain Evaluation          |
-| --------------------------------------- | ------------------------------------------- | --------------------------- |
-| **[PLACE OBSTACLE / VEHICLE GIF HERE]** | **[PLACE LIDAR OR SENSOR SCREENSHOT HERE]** | **[PLACE DESERT GIF HERE]** |
-
-The simulation combines a ROS2-controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
-
+By following this guide, you will be able to:
+* Set up ROS 2 Humble.
+* Create a dedicated ROS 2 workspace.
+* Build the custom `ugv_assignment_msgs` package.
+* Write the `Input.msg` and `Output.msg` interfaces.
+* Compile and source your custom workspace files.
+* Set up the network bridge (ROS-TCP Endpoint).
+* Bind Unity together with your ROS 2 nodes.
+* Publish manual throttle, brake, and steering inputs to the UGV.
+* Intercept live vehicle feedback coming back from Unity.
 
 ---
 
+## 1. System Setup
 
-# What Is Included
+Our framework splits the computational load across two operating system layers:
+* **Operating Systems:** Windows hosting an Ubuntu environment through WSL.
+* **Core Software:** ROS 2 Humble, Unity 3D, and the Unity Robotics ROS-TCP Connector.
 
-### Vehicle
-
-- **Ackermann Steering** — Computes front wheel steering angles for real vehicle like turning.
-- **ROS Vehicle Control** — Receives throttle, brake, and steering commands from ROS2.
-- **Four Wheel Suspension** — Simulates wheel movement over uneven terrain.
-
-### Sensors
-
-- **GPS** — Publishes the simulated vehicle's geographic coordinates.
-- **IMU** — Publishes vehicle orientation, angular velocity, and acceleration.
-- **Camera** — Publishes camera images from the vehicle.
-- **LiDAR** — Publishes detected 3D point cloud data.
-
-### ROS2
-
-- **Vehicle Input** — Receives control commands through a custom ROS2 message.
-- **Vehicle Output** — Publishes the current vehicle state and motion feedback.
-- **Sensor Publishing** — Streams simulated GPS, IMU, camera, and LiDAR data.
-- **TF Publishing** — Publishes the transform tree between the vehicle and sensor frames.
-- **Joint States** — Publishes wheel positions and suspension state.
-- **ROS Bag Recording** — Records evaluation scenario data for playback and verification.
-
+The main ROS 2 stacks execute directly inside Ubuntu via WSL, while the visual Unity simulator runs natively on Windows. The two layers pass data back and forth smoothly by linking through a network socket known as the ROS-TCP Endpoint.
 
 ---
 
-# Evaluation Scenarios
+## 2. Install ROS 2 Humble
 
-The package includes dedicated scenes covering the evaluation requirements.
-
-### 01 — Obstacle Course
-
-**[PLACE OBSTACLE COURSE GIF HERE]**
-
-A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
-
-**[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
-
----
-
-### 02 — Desert Driving
-
-**[PLACE DESERT / DUNE GIF HERE]**
-
-The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity target of **8 m/s**.
-
-**[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
-
-The terrain uses the following physics material:
-
-```text
-Dynamic Friction: 0.3
-Static Friction: 0.4
-Bounciness: 0.2
-Friction Combine: Minimum
-Bounce Combine: Average
-```
-
-**[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]**
-
----
-
-### 03 — Sand Synthetic Data
-
-Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
-
-| Camera                                     | LiDAR                                     |
-| ------------------------------------------ | ----------------------------------------- |
-| **[PLACE CAMERA PARTICLE IMAGE/GIF HERE]** | **[PLACE LIDAR PARTICLE IMAGE/GIF HERE]** |
-
-Vehicle movement is not required for this scene. The focus is on how the particles appear in the generated sensor outputs.
-
-### 04 — ROS Input & Vehicle Feedback
-
-This demonstration shows the complete ROS2 control and feedback loop.
-
-**[PLACE ROS INPUT / ROS OUTPUT GIF OR SCREENSHOT HERE]**
-
-```text
-ROS2 Input Command
-        ↓
-Unity Vehicle Controller
-        ↓
-Ackermann Steering + Vehicle Physics
-        ↓
-Vehicle State
-        ↓
-ROS2 Output Feedback
-```
-
-The vehicle receives throttle, brake, and steering commands through the custom `ugv_assignment_msgs/Input` message.
-
-The resulting vehicle state, velocity, angular velocity, and steering angles are published back to ROS2 through `ugv_assignment_msgs/Output`.
-
-```text
-ugv_assignment_msgs/Input
-
-float64 throttle         # Range: 0.0 to 100.0 (percent)
-float64 brake            # Range: 0.0 to 100.0 (percent)
-float64 steering_angle   # Range: -0.5 to 0.5 (radians, negative = left)
-```
-
-```text
-ugv_assignment_msgs/Output
-
-string state                         # One of: "Parking", "Manual", ...
-float64 linear_velocity              # m/s
-float64 angular_velocity             # # rad/s  
-float64 front_left_steering_angle    # radians
-float64 front_right_steering_angle   # radians
-```
-
-**[PLACE ROS INPUT TERMINAL + UNITY VEHICLE + ROS OUTPUT TERMINAL SCREENSHOT HERE]**
-
-🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](PLACE_ROS_INPUT_OUTPUT_YOUTUBE_LINK_HERE)**
-
----
-
----
-
-# Project Setup
-
-The repository is delivered as a Unity Package Manager compatible package. The repository does not require cloning the full Unity project.
-This guide covers the dependencies and ROS2 setup required to connect the Unity simulation with the ROS2 environment.
-
-## Requirements
-
-- Unity 3D - URP (Universal Render Pipeline)
-- ROS2 Humble
-- Unity Robotics ROS-TCP Connectors
-
----
-
-## 1. Install ROS-TCP Connector
-
-The Unity simulation uses the ROS-TCP Connector to communicate with ROS2.
-
-In your Unity project:
-
-1. Open **Window → Package Manager**.
-2. Click the **+** button.
-3. Select **Add package from git URL...**
-4. Enter:
-
-```text
-https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robotics.ros-tcp-connector
-
-### 2. Start the ROS endpoint in Linux
+First, deploy a standard installation of ROS 2 Humble inside your Ubuntu container. Once finished, ensure that your terminal environment can find the core ROS libraries by running:
 
 ```bash
-source /opt/ros/[DISTRO]/setup.bash
+source /opt/ros/humble/setup.bash
+```
+
+To verify the installation is functional, pull up the main help menu:
+
+```bash
+ros2 --help
+```
+
+### Automating the Environment Setup
+To avoid running the source command manually every time you open a clean window, append the setup path straight into your shell profile:
+
+```bash
+# Add ROS 2 environment variable automation to your profile
+echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
+
+# Reload your terminal configuration
+source ~/.bashrc
+```
+
+---
+
+## 3. Create a ROS 2 Workspace
+
+We need a dedicated development workspace directory to house and build our custom UGV messaging architectures. Set up the target folders by running:
+
+```bash
+mkdir -p ~/ugv_ws/src
+cd ~/ugv_ws/src
+```
+
+Your resulting workspace tree looks like this:
+```text
+ugv_ws/
+└── src/
+```
+
+This source file group will store all your personalized message code structures.
+
+---
+
+## 4. Create the Custom Message Package
+
+Navigate into your newly created source folder and generate an empty package template configured for the CMake build management tool:
+
+```bash
+cd ~/ugv_ws/src
+ros2 pkg create --build-type ament_cmake ugv_assignment_msgs
+```
+
+Your underlying project directory will expand to reveal these boilerplate files:
+```text
+ugv_ws/
+└── src/
+    └── ugv_assignment_msgs/
+        ├── CMakeLists.txt
+        ├── package.xml
+        └── src/
+```
+
+Now, create a dedicated `msg` folder to keep your tracking definitions isolated and clean:
+
+```bash
+cd ~/ugv_ws/src/ugv_assignment_msgs
+mkdir msg
+```
+
+Your development package layout is now ready for message scripting:
+```text
+ugv_assignment_msgs/
+├── CMakeLists.txt
+├── package.xml
+└── msg/
+```
+
+---
+
+## 5. Create `Input.msg`
+
+The `Input.msg` configuration defines the steering, torque, and braking instructions routed from your external ROS nodes over to the Unity engine canvas. 
+
+### Writing the Interface
+Create and open the file inside your terminal using the Nano text editor:
+
+```bash
+cd ~/ugv_ws/src/ugv_assignment_msgs/msg
+nano Input.msg
+```
+
+Paste these three precise control properties into the file:
+
+```text
+float64 throttle
+float64 brake
+float64 steering_angle
+```
+
+### Parameter Explanations
+* `throttle` — Maps directly to vehicle engine acceleration variables.
+* `brake` — Triggers mechanical friction and decelerates the wheels.
+* `steering_angle` — Defines the target heading direction.
+
+```text
+ROS 2 Command Line → /input Topic → ugv_assignment_msgs/Input → Unity Subscriber → Vehicle Controller
+```
+
+---
+
+## 6. Create `Output.msg`
+
+The `Output.msg` file tracks operational feedback and kinematics data harvested from the Unity physics loop and returns it directly to your ROS environment.
+
+### Writing the Interface
+Generate the companion output telemetry model using your editor:
+
+```bash
+nano Output.msg
+```
+
+Add these status properties to your configuration file:
+
+```text
+string state
+float64 linear_velocity
+float64 angular_velocity
+float64 front_left_steering_angle
+float64 front_right_steering_angle
+```
+
+### Parameter Explanations
+* `state` — Tracks the vehicle's current high-level state machine or action loop.
+* `linear_velocity` — Tracks true forward speed through space.
+* `angular_velocity` — Tracks live turning speeds and yaw rotation dynamics.
+* `front_left_steering_angle` — Tracks the exact physical orientation of the front-left wheel tire.
+* `front_right_steering_angle` — Tracks the exact physical orientation of the front-right wheel tire.
+
+```text
+Unity Vehicle Physics → State Telemetry Capture → ugv_assignment_msgs/Output → /feedback Channel → ROS 2 Environment
+```
+
+---
+
+## 7. Configure `package.xml`
+
+We must tell the package compiler that this project requires message building extensions. Open your package dependencies configuration file:
+
+```bash
+cd ~/ugv_ws/src/ugv_assignment_msgs
+nano package.xml
+```
+
+Ensure these lines are present inside the dependencies section to allow proper code interface generation during the workspace build loop:
+
+```xml
+<buildtool_depend>ament_cmake</buildtool_depend>
+<build_depend>rosidl_default_generators</build_depend>
+<exec_depend>rosidl_default_runtime</exec_depend>
+<member_of_group>rosidl_interface_packages</member_of_group>
+```
+
+---
+
+## 8. Configure `CMakeLists.txt`
+
+Next, modify the main compiler instructions to explicitly register our messaging layout files during compilation. Open the build script:
+
+```bash
+nano CMakeLists.txt
+```
+
+Verify that your script calls out the message generators and links the input/output dependencies by formatting the file to include these core blocks:
+
+```cmake
+find_package(ament_cmake REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
+
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Input.msg"
+  "msg/Output.msg"
+)
+
+ament_export_dependencies(rosidl_default_runtime)
+ament_package()
+```
+
+---
+
+## 9. Build the Workspace
+
+With your settings configured, head back to your root directory to build the custom code:
+
+```bash
+cd ~/ugv_ws
+colcon build
+```
+
+### Activating the Workspace
+Once the compilation finishes cleanly, refresh your active terminal window so it logs the new message models:
+
+```bash
+source install/setup.bash
+```
+
+To make sure your custom messaging workspace mounts automatically whenever a new terminal tab opens, write the tracking link into your shell script profile:
+
+```bash
+# Add your custom message package paths to automation
+echo "source ~/ugv_ws/install/setup.bash" >> ~/.bashrc
+
+# Refresh variables
+source ~/.bashrc
+```
+
+---
+
+## 10. Verify the Custom Messages
+
+Let's double-check that your ROS 2 registry can find and read our definitions. Run a query list scan:
+
+```bash
+ros2 pkg list | grep ugv_assignment_msgs
+```
+
+Test your input format blueprint:
+```bash
+ros2 interface show ugv_assignment_msgs/msg/Input
+```
+* **Expected Terminal Reply:**
+  ```text
+  float64 throttle
+  float64 brake
+  float64 steering_angle
+  ```
+
+Test your output telemetry blueprint:
+```bash
+ros2 interface show ugv_assignment_msgs/msg/Output
+```
+* **Expected Terminal Reply:**
+  ```text
+  string state
+  float64 linear_velocity
+  float64 angular_velocity
+  float64 front_left_steering_angle
+  float64 front_right_steering_angle
+  ```
+
+[PLACE CUSTOM MESSAGE TERMINAL SCREENSHOT HERE]
+
+---
+
+## 11. Install the Unity ROS-TCP Connector
+
+We manage network data passage inside the editor by importing Unity's official standalone communications toolkit.
+
+### Installation Steps
+1. Launch Unity and open your target project canvas.
+2. Click **Window** along the top control tray, then select **Package Manager**.
+3. Locate and click the **`+`** (plus sign icon) positioned in the upper-left area.
+4. Select **Add package from git URL...** from the contextual drop-down choices.
+5. Paste this exact destination link into the input line:
+   `https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robotics.ros-tcp-connector`
+
+The engine will download and import the tracking dependencies automatically into your project hierarchy.
+
+[PLACE UNITY PACKAGE MANAGER SCREENSHOT HERE]
+
+---
+
+## 12. Install the Custom ROS Message Package in Unity
+
+The Unity scripts require direct access to matching C# wrappers of your compiled message blueprints to communicate effectively. Use the imported tool utilities within the editor to target your local `ugv_assignment_msgs` path and generate your corresponding C# class packages.
+
+## 13. Start the ROS-TCP Endpoint
+
+Before hitting Play in Unity, you need to spin up the ROS-TCP Endpoint in your Linux terminal. This serves as the communication bridge that passes data between Unity and ROS 2.
+
+Open an Ubuntu/WSL terminal and run:
+
+```bash
+# Set up your ROS 2 and workspace environments
+source /opt/ros/humble/setup.bash
+source ~/ugv_ws/install/setup.bash
+
+# Launch the connection bridge server
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
 
-### 3. Add the custom package in Unity
+Leave this terminal window open and running in the background while you test.
 
-Open:
+[PLACE ROS-TCP ENDPOINT TERMINAL SCREENSHOT HERE]
 
-```text
-Window → Package Manager → + → Add package from current repo's Git URL
-```
+---
 
-Add:
+## 14. Start the Unity Simulation
 
-```text
-[REPOSITORY-URL]
-```
-
-### 4. Open any evaluation scene
+Open Unity and choose the specific testing environment you want to evaluate from your project files:
 
 ```text
 Scenes/
@@ -198,70 +331,200 @@ Scenes/
 └── SandParticleScene
 ```
 
-Start the ROS endpoint, open the required scene, and press **Play**.
+To run your baseline communication checks, load up the scene that contains your UGV prefab and network connection configurations. Before clicking anything, double-check these four elements:
+* Your Linux ROS-TCP Endpoint terminal is active and waiting.
+* The network configuration IP addresses inside the Unity inspector match your WSL network setup.
+* Your UGV model has its input subscriber node attached.
+* Your UGV model has its output publisher node attached.
+
+If everything looks correct, click **Play**. Unity will automatically connect to your terminal and begin exchanging live network messages.
 
 ---
 
-# ROS Interface
+## 15. Check Active ROS Topics
 
-### Published Data
+Open up a fresh, clean Ubuntu/WSL terminal tab to verify that your pathways are actively transmitting data. Mount your environmental paths and list the active nodes:
 
-| Category | Topic                 | Type                         |   Rate | Description                                      |
-| -------- | --------------------- | ---------------------------- | -----: | ------------------------------------------------ |
-| Feedback | `/vehicle/output`     | `ugv_assignment_msgs/Output` |  50 Hz | Publishes vehicle state feedback.                |
-| GPS      | `/gps`                | `sensor_msgs/NavSatFix`      |  10 Hz | Publishes simulated vehicle coordinates.         |
-| IMU      | `/imu`                | `sensor_msgs/Imu`            | 100 Hz | Publishes vehicle orientation and motion data.   |
-| Camera   | `/camera`             | `sensor_msgs/Image`          |  30 Hz | Publishes the simulated camera image.            |
-| LiDAR    | `/lidar`              | `sensor_msgs/PointCloud2`    |  10 Hz | Publishes the simulated LiDAR point cloud.       |
-| TF       | `/tf`                 | `tf2_msgs/TFMessage`         |  50 Hz | Publishes the vehicle and sensor transform tree. |
-| Joints   | `/jointStates`        | `sensor_msgs/JointState`     |  50 Hz | Publishes wheel joint positions.                 |
+```bash
+source /opt/ros/humble/setup.bash
+source ~/ugv_ws/install/setup.bash
+ros2 topic list
+```
+
+Your system graph will reveal all of the simulation's live active communication pathways:
+* `/input`
+* `/feedback`
+* `/gps`
+* `/imu`
+* `/camera`
+* `/lidar`
+* `/tf`
+* `/joint_states`
+
+If you want to view a topic's underlying message configuration, run an info command query:
+
+```bash
+ros2 topic info /input
+ros2 topic info /feedback
+```
+
+[PLACE ROS TOPIC LIST SCREENSHOT HERE]
 
 ---
 
-# Bonus Point - Custom Obstacle Assets
+## 16. Sending Input Commands to the Vehicle
 
-Some of the obstacle assets used in the Obstacle scene were modelled and textured specifically for this project using blender.
-The original Blender source file is included as supporting evidence:
+The vehicle listens for driving instructions directly on the `/input` topic channel.
+
+### Message Blueprint
+* **Message Type:** `ugv_assignment_msgs/msg/Input`
+* **Available Parameters:** `throttle`, `brake`, `steering_angle`
+
+### Command Reference Guide
+
+#### A. Basic Drive Command
+To make the vehicle accelerate straight forward, run:
+
+```bash
+ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 50.0, brake: 0.0, steering_angle: 0.0}"
+```
+This triggers **50% throttle**, zero brakes, and perfectly straight steering.
+
+#### B. Steering Left/Right
+To test how the vehicle handles a basic turn, add a steering offset value:
+
+```bash
+ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 30.0, brake: 0.0, steering_angle: 0.3}"
+```
+This applies **30% throttle** and bends the front tires to a **0.3 steering angle**.
+
+To steer in the opposite direction, swap to a negative steering orientation value:
+
+```bash
+ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 30.0, brake: 0.0, steering_angle: -0.3}"
+```
+
+#### C. Testing Brakes
+To test how the vehicle handles a sudden deceleration stop command, drop your acceleration value and spike the braking load parameter:
+
+```bash
+ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 0.0, brake: 100.0, steering_angle: 0.0}"
+```
+
+### Understanding the Data Flow
 
 ```text
-ROSTII.blend
+Terminal Command Line → /input Topic → ugv_assignment_msgs/Input → Unity ROS Subscriber → Vehicle Controller
+                                                                                              │
+                                                                          ┌───────────────────┼───────────────────┐
+                                                                          ▼                   ▼                   ▼
+                                                                      Throttle              Brake             Steering
+                                                                                                                  │
+                                                                                                                  ▼
+                                                                                                          Ackermann Steering
+                                                                                                                  │
+                                                                                                                  ▼
+                                                                                                           Vehicle Physics
 ```
-The Blender source contains the original modelling and texture work used to create the custom obstacle assets.
 
-**[PLACE BLENDER VIEWPORT SCREENSHOT HERE]**
+[PLACE ROS INPUT COMMAND TERMINAL SCREENSHOT HERE]
 
-**[PLACE WIREFRAME / EDIT MODE SCREENSHOT HERE]**
-
-**[PLACE TEXTURE PAINTING SCREENSHOT HERE]**
-
-The unique texture painting and source `.blend` file are included to demonstrate that these assets were created and edited for this project rather than only imported as finished models.
-
-The resulting assets are used in the Unity obstacle evaluation scene:
-
-**[PLACE UNITY OBSTACLE SCENE SCREENSHOT HERE]**
-
+[PLACE UNITY VEHICLE MOVING SCREENSHOT OR GIF HERE]
 
 ---
 
-# Downloading the Recordings & ROS Bags
+## 17. Checking Vehicle Feedback
 
-Each evaluation scenario is accompanied by a video recording and ROS bag data.
+Unity continuously broadcasts the vehicle's real physical behavior back across the network wire using the `/feedback` topic. To see this output data running live, execute an echo query:
 
-* [Evaluation Videos](Documentation~/Evaluation.md)
-* [ROS Bag Recording and Playback](Documentation~/ROS-Bags.md)
+```bash
+ros2 topic echo /feedback
+```
+
+### Telemetry Output Parameters
+* `state` — Current high-level operational loop tracker.
+* `linear_velocity` — True forward speed moving across the coordinate plane.
+* `angular_velocity` — Rotational yaw values tracking turn speeds.
+* `front_left_steering_angle` — Exact dynamic wheel calculation for the front-left tire.
+* `front_right_steering_angle` — Exact dynamic wheel calculation for the front-right tire.
+
+This step is critical because it tells ROS 2 what the vehicle is **actually doing** in the environment rather than what it was **told to do**. For instance, sending a single generic steering command results in two entirely separate wheel angles in your terminal feedback logs, proving that the underlying Ackermann linkage physics are processing properly.
+
+```text
+ROS 2 Input Command (throttle: 30, steering_angle: 0.3)
+                        ↓
+               Unity Vehicle Moves
+                        ↓
+ROS 2 Feedback (linear_velocity, angular_velocity, individual wheel angles)
+```
+
+This confirms a functional two-way data feedback channel rather than just blindly dumping instructions down a one-way path.
+
+[PLACE LIVE ROS FEEDBACK SCREENSHOT HERE]
 
 ---
 
+## 18. Recording the ROS Data
 
-# Documentation
+You can save your entire multi-channel simulation session into an isolated, re-playable folder using a standard ROS bag configuration.
 
-* [Architecture & Design Decisions](Documentation~/Architecture.md)
-* [ROS2 Setup](Documentation~/ROS2-Setup.md)
-* [Evaluation & Results](Documentation~/Evaluation.md)
-* [ROS Bag Recording](Documentation~/ROS-Bags.md)
+### Data Logging Command
+To record your control paths and active sensor streams simultaneously during a run, execute:
+
+```bash
+ros2 bag record -o ros_test /input /feedback /gps /imu /camera /lidar /tf /joint_states
+```
+
+This saves your vehicle inputs, live engine telemetry, GPS tracks, IMU balances, camera feeds, LiDAR points, structural transform trees, and wheel joint updates safely in your workspace directory.
+
+### Replaying your Data Packages
+To audit your recorded session logs later without turning on Unity or resetting your environment parameters, run:
+
+```bash
+ros2 bag play ros_test
+```
+
+[PLACE ROS BAG RECORDING SCREENSHOT HERE]
 
 ---
 
-# References
+## Troubleshooting
 
-Unity3D, https://github.com/Unity-Technologies/ROS-TCP-Connector, ROS2 Humble, RViz 2, Blender, OBS Studio, LiCEcap, Davinci Resolve 
+### 1. Unity Does Not Connect to ROS 2
+* Ensure your network handshake engine is running inside your Linux shell container:
+  ```bash
+  ros2 run ros_tcp_endpoint default_server_endpoint
+  ```
+* Open the connection settings layout option window inside Unity. Ensure that your designated IP pointer points to your exact active WSL computer address and uses the correct open network port (default is usually `10000`).
+
+### 2. Custom Message Is Not Found
+* Confirm that your message folder workspace has been compiled cleanly without warnings:
+  ```bash
+  cd ~/ugv_ws && colcon build
+  ```
+* Refresh your shell paths to inherit the new changes:
+  ```bash
+  source install/setup.bash
+  ```
+* Check that your underlying data layout definition builds properly:
+  ```bash
+  ros2 interface show ugv_assignment_msgs/msg/Input
+  ```
+
+### 3. No Topics Are Visible
+* Verify that Unity is actively running in **Play** mode.
+* Verify your ROS-TCP Endpoint server tab is currently active.
+* Ensure your open console shell handles both your root ROS 2 configuration and your local assignment workspace directory parameters:
+  ```bash
+  source /opt/ros/humble/setup.bash
+  source ~/ugv_ws/install/setup.bash
+  ros2 topic list
+  ```
+
+### 4. Vehicle Does Not Move
+* Ensure that your terminals are publishing data packets onto the exact target channel names:
+  ```bash
+  ros2 topic echo /input
+  ```
+* Check your command syntax ranges to ensure your throttle, braking, and steering configurations are passing valid numeric ranges.
+* Ensure the Unity scene is running and that your UGV vehicle root script nodes have their active input subscribers enabled in the inspector panel.
