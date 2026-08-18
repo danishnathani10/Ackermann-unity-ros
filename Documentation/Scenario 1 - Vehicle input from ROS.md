@@ -54,10 +54,6 @@ This scenario validates:
 
 The important part of this scenario is that the output is not simply a copy of the input command. The input controls the vehicle, the Unity physics system updates the vehicle state over terrain, and the resulting state is then published back to ROS 2.
 
-[PLACE ROS INPUT TO UNITY SCREENSHOT HERE]
-
-[PLACE UNITY VEHICLE RESPONSE GIF HERE]
-
 ---
 
 # 2. ROS Initialization and ROS Bag Creation
@@ -74,7 +70,6 @@ ros2 run ros_tcp_endpoint default_server_endpoint
 
 Once Unity starts and connects successfully, the vehicle begins subscribing to control messages and publishing feedback.
 
-[PLACE ROS TCP ENDPOINT TERMINAL SCREENSHOT HERE]
 
 ### Checking Active Topics
 To confirm that the Unity vehicle has successfully joined the ROS graph, open a new terminal window and look at the active nodes:
@@ -96,7 +91,6 @@ You can also check whether Unity is actively publishing feedback at the proper s
 ros2 topic hz /feedback
 ```
 
-[PLACE ROS TOPIC LIST SCREENSHOT HERE]
 
 ### Recording the Session
 We log the entire communication session into a ROS bag named `ros_input_output1` so we can inspect both sides of the loop later:
@@ -143,9 +137,6 @@ Unity bundles the vehicle's physical reactions and broadcasts them back to ROS u
 * Embedded Ackermann math blocks to split wheel tracking.
 * Fully physics-driven Rigidbody car body with active four-wheel suspension.
 
-[PLACE UNITY VEHICLE ROS COMPONENT SCREENSHOT HERE]
-
-[PLACE CUSTOM MESSAGE / UNITY INSPECTOR SCREENSHOT HERE]
 
 ---
 
@@ -169,7 +160,6 @@ To test how the vehicle handles a basic turn, use this command:
 ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 30.0, brake: 0.0, steering_angle: 0.3}"
 ```
 
-[PLACE INPUT COMMAND TO VEHICLE RESPONSE GIF HERE]
 
 ---
 
@@ -178,10 +168,6 @@ ros2 topic pub --once /input ugv_assignment_msgs/msg/Input "{throttle: 30.0, bra
 Once the Unity engine finishes processing a physics update, it collects the vehicle's actual state and streams it back to ROS 2.
 
 This step is critical because it tells ROS 2 what the vehicle is **actually doing** in the environment rather than what it was **told to do**. For instance, sending a single steering value to the vehicle results in two completely separate wheel angles in the output log, demonstrating that our Ackermann link is actively working.
-
-[PLACE LIVE FEEDBACK TERMINAL SCREENSHOT HERE]
-
-[PLACE LEFT RIGHT STEERING ANGLE OUTPUT SCREENSHOT HERE]
 
 ---
 
@@ -196,7 +182,7 @@ You can easily audit or trace our entire control loop by monitoring these core t
 | **Unity → ROS 2** | `/tf` | Publishes vehicle and sensor transforms |
 | **Unity → ROS 2** | `/joint_states` | Publishes vehicle wheel and joint information |
 
-[PLACE RVIZ / TERMINAL / TOPIC GRAPH SCREENSHOT HERE]
+
 
 This centralized communication loop operates smoothly alongside our existing sensor pipelines. This means you can actively steer the car via remote ROS commands while simultaneously streaming fresh GPS, IMU, Camera, and LiDAR packets.
 
