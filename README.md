@@ -94,9 +94,9 @@ The package includes dedicated scenes covering the evaluation requirements.
 
 This demonstration shows the complete ROS2 control and feedback loop.
 
-🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](https://youtu.be/wvYu8hE7G8I)**
+🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](https://youtu.be/wvYu8hE7G8I?si=Sx3LrtqQXpzNq0-b)**
 
-**[PLACE ROS INPUT / ROS OUTPUT GIF OR SCREENSHOT HERE]**
+[![Ackermann](Documentation/Gifs/ROSInOut.png)](https://youtu.be/wvYu8hE7G8I?si=Sx3LrtqQXpzNq0-b)
 
 ```text
 ROS2 Input Command
@@ -144,7 +144,7 @@ A custom environment for validating vehicle movement between fixed obstacles usi
 
 🎥 **[Watch the Ackermann steering in obstacle scene](https://youtu.be/lUshATn7ntE)**
 
-**[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
+ [![Obstacle Course](Documentation/Gifs/Obstacles.png)](https://youtu.be/IusHATn7ntE)
 
 ---
 
@@ -157,7 +157,7 @@ The vehicle driving through desert terrain containing dunes and bumps with a min
 
 🎥 **[Watch the car driving in dunes at min velocity of 8 m/s](https://youtu.be/taptY6ne6p0)**
 
-**[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
+[![Desert Driving](Documentation/Gifs/Duney.png)](https://youtu.be/taptY6e6p0)
 
 The terrain uses the following physics material:
 
@@ -178,6 +178,8 @@ Bounce Combine: Average
 Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
 
 🎥 **[Watch the Sand detection in LiDar and Camera | Synthetic Data ](https://youtu.be/5GQZkRiDoXE)**
+
+[![Sand Synthetic Data](Documentation/Gifs/Particles.png)](https://youtu.be/5QZkRiDoXE)
 
 | Camera                                     | LiDAR                                     |
 | ------------------------------------------ | ----------------------------------------- |
@@ -358,6 +360,23 @@ Each evaluation scenario is accompanied by a video recording and ROS bag data.
 
 ---
 
-# References
+# References & Third-Party Tools
 
-Unity3D, https://github.com/Unity-Technologies/ROS-TCP-Connector, ROS2 Humble, RViz 2, Blender, OBS Studio, LiCEcap, Davinci Resolve 
+The following third party software, frameworks, packages, websites, and tools were used for this assignment:
+
+- [Unity](https://unity.com/) — Game engine used to build and run the simulation.
+- [Unity Robotics Hub](https://github.com/Unity-Technologies/Unity-Robotics-Hub) — Referenced for Unity robotics workflows and ROS integration.
+- [ROS–TCP–Connector](https://github.com/Unity-Technologies/ROS-TCP-Connector) — Used for communication between Unity and ROS 2.
+- [ROS 2](https://www.ros.org/) — Robotics middleware used for vehicle control, sensor communication, ROS topics, messages, and ROS bag recording.
+- [ROS 2 Humble Documentation](https://docs.ros.org/en/humble/) — Referenced during ROS 2 setup and implementation.
+- [RViz](https://github.com/ros2/rviz) — Used for visualizing ROS data and sensor output.
+- [Blender](https://www.blender.org/) — Used to create and prepare custom 3D assets for the simulation scenes.
+- [OBS Studio](https://obsproject.com/) — Used for recording simulation demonstrations.
+- [LiCapture](https://github.com/MathewSachin/Captura) — Used for screen/video capture where applicable.
+- [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve) — Used for video editing and presentation preparation.
+- [GitHub](https://github.com/) — Used for repository hosting and version control.
+- [ChatGPT](https://chatgpt.com/) — Used as an AI assisted development and documentation tool during implementation, debugging, and documentation.
+- [Google Gemini](https://gemini.google.com/) — Used as an additional AI assisted tool for development support and problem solving.
+
+> AI tools such as ChatGPT and Gemini were used only as development assistants.
+> The project implementation, Unity setup, scene creation, testing, debugging, and final integration were manually completed as part of the project work.
