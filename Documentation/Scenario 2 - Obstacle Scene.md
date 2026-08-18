@@ -3,12 +3,12 @@
 ## Overview
 
 We built this scene to test how well the vehicle handles, steers, and communicates under realistic conditions. It lets us evaluate Ackermann steering, 4 wheel suspension, ROS 2 communication, sensor publishing, and live vehicle feedback.
-
 The entire testing loop was built from scratch. To meet the bonus requirements for custom assets, I modeled and prepared the custom obstacles ourselves using Blender. Have attached the blend file in the repository.
 
 **Evaluation Video**
 
-[PLACE OBSTACLE SCENE YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
+🎥 **[Watch the Ackermann steering in obstacle scene](https://www.youtube.com/watch?v=lUshATn7ntE)**
+ [![Obstacle Course](Gifs/Obstacles.png)](https://www.youtube.com/watch?v=lUshATn7ntE)
 
 ---
 
