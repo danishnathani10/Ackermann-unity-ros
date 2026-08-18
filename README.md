@@ -38,11 +38,18 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 
 # What Is Included
 
+<table>
+<tr>
+
+<td width="70%" valign="top">
+
 ### Vehicle
 
-- **Ackermann Steering** — Computes front wheel steering angles for real vehicle like turning.
+- **Ackermann Steering** — Computes front wheel steering angles for real vehicle-like turning.
 - **ROS Vehicle Control** — Receives throttle, brake, and steering commands from ROS2.
 - **Four Wheel Suspension** — Simulates wheel movement over uneven terrain.
+
+<br>
 
 ### Sensors
 
@@ -50,6 +57,8 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 - **IMU** — Publishes vehicle orientation, angular velocity, and acceleration.
 - **Camera** — Publishes camera images from the vehicle.
 - **LiDAR** — Publishes detected 3D point cloud data.
+
+<br>
 
 ### ROS2
 
@@ -60,6 +69,20 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 - **Joint States** — Publishes wheel positions and suspension state.
 - **ROS Bag Recording** — Records evaluation scenario data for playback and verification.
 
+</td>
+
+<td width="30%" align="center" valign="middle">
+
+<img src="Documentation/Gifs/Ackermann.gif" width="100%" alt="Ackermann vehicle simulation">
+
+<br><br>
+
+**Ackermann Vehicle Simulation**
+
+</td>
+
+</tr>
+</table>
 
 ---
 
