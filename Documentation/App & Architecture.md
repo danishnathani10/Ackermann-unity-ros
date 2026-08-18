@@ -65,6 +65,8 @@ Vehicle motion is managed entirely inside `CarController.cs`, which processes th
 * **Inner / Outer Wheel Angles:** To eliminate skid during turns, the inside front wheel receives a larger steering angle than the outside wheel.
 * **Speed Sensitivity:** Steering tension scales down at higher velocities to preserve vehicle stability.
 
+![Steering](Gifs/Ackermann.gif)
+
 ### Motor, Brakes, and Stability
 * **Motor Torque:** throttle percentage maps directly to wheel motor torque.
 * **Braking:** Brake percentage maps directly to brake torque across the configurations.
@@ -150,6 +152,8 @@ Each sensor registers its own ROS publisher and can be independently started or 
 ### 1. Simulation Manager (`SimulationManager.cs`)
 The central controller of the Unity simulation. It manages the active input source, ROS connection, feedback publishing, and enables or disables each sensor publisher when its setting changes.
 
+![Simulation Manager Script](Gifs/simmanagerscript.png)
+
 ##### A. Configuration Parameters
 * **inputSource** (CarInputSource enum): Select Keyboard or ROS as the active vehicle input source.
 * **connectToRos** (bool): Connects Unity to the configured ROS connection.
@@ -174,6 +178,8 @@ The central controller of the Unity simulation. It manages the active input sour
 ### 2. Car Input (`CarInput.cs`)
 Acts as the input bridge for the vehicle. It reads control commands either from the keyboard or ROS and passes the final VehicleCommand to the CarController.
 
+![Car Input](Gifs/carinputscript.png)
+
 ##### A. Configuration Parameters
 * **inputSource** (CarInputSource enum): Selects the current vehicle input source: Keyboard or ROS.
 * **carController** (CarController): Reference to the vehicle controller that receives the drive command.
@@ -194,6 +200,8 @@ Acts as the input bridge for the vehicle. It reads control commands either from 
 ### 3. ROS Input (`RosInput.cs`)
 The ROS input component subscribes to the custom /input topic, receives throttle, brake, and steering commands, and converts them to VehicleCommand that is passed to CarInput for vehicle control.
 
+![ROS Input](Gifs/ROSinputscript.png)
+
 ##### A. Configuration Parameters
 * **inputTopic** (string): ROS topic used to receive Input.msg commands; default /input.
 * **carInput** (CarInput): Reference used to forward the received vehicle command.
@@ -210,6 +218,8 @@ The ROS input component subscribes to the custom /input topic, receives throttle
 
 ### 4. ROS Output (`RosOutput.cs`)
 The ROS output component reads the current vehicle state from CarController and publishes the result as the custom /feedback topic using OutputMsg.
+
+![ROS Output](Gifs/ROSoutputscript.png)
 
 ##### A. Configuration Parameters
 * **outputTopic** (string): ROS topic used for vehicle feedback.
@@ -228,6 +238,8 @@ The ROS output component reads the current vehicle state from CarController and 
 
 ### 5. GPS Sensor (`GpsSensor.cs`)
 The GPS sensor converts the Unity vehicle position into latitude, longitude, and altitude values using a configurable GPS origin. It maps local position to geographic reference.
+
+![GPS Sensor](Gifs/GpsScript.png)
 
 ##### A. Configuration Parameters
 * **gpsTopic** (string): ROS topic used for GPS publication.
@@ -251,6 +263,8 @@ The GPS sensor converts the Unity vehicle position into latitude, longitude, and
 ### 6. IMU Sensor (`ImuSensor.cs`)
 The IMU sensor reads the vehicle Rigidbody and publishes its orientation, angular velocity, and linear acceleration as a sensor_msgs/Imu message on the /imu topic.
 
+![IMU Sensor](Gifs/ImuScript.png)
+
 ##### A. Configuration Parameters
 * **imuTopic** (string): ROS topic used for IMU publication.
 * **vehicleRigidbody** (RigidBody): Rigidbody used to read vehicle movement and rotation.
@@ -271,6 +285,8 @@ The IMU sensor reads the vehicle Rigidbody and publishes its orientation, angula
 ### 7. Camera Sensor (`CameraSensor.cs`)
 The camera sensor renders the attached Unity camera data into a RenderTexture, reads the pixels into a Texture2D, and publishes the result as sensor_msgs/Image on /camera.
 
+![Camera Sensor](Gifs/CameraScript.png)
+
 ##### A. Configuration Parameters
 * **cameraTopic** (string): ROS topic used for image publication.
 * **imageWidth** (int): Published image width; default 640.
@@ -286,8 +302,12 @@ The camera sensor renders the attached Unity camera data into a RenderTexture, r
 6. Populate ImageMsg and publish raw RGB data.
 7. Repeat the process at the configured publish rate.
 
+![Camera's Image getting visualized in RViz 2](Gifs/CameraRviz.png)
+
 ### 8. LiDAR Sensor (`LidarSensor.cs`)
 The LiDAR sensor performs a 360° raycast scan around the vehicle, detects obstacles and particle volume, and publishes the resulting distance data as a ROS message on /lidar. It also supports optional debug visualization inside Unity.
+
+![LiDAR](Gifs/lidarscript.png)
 
 ##### A. Scan Configuration
 * **visualizeRaysInEditor** (bool): Shows LiDAR rays in Unity Editor.
@@ -325,8 +345,14 @@ The LiDAR sensor performs a 360° raycast scan around the vehicle, detects obsta
 ##### C. LidarVisualizer (`LidarVisualizer.cs`)
 The LidarVisualizer script provides a visual debug representation of the LiDAR scan inside Unity. It creates LineRenderer rays and updates their length and colour (green - no object, red - obstacle detected) according to the LiDAR detection results.
 
+![Detected sand with LiDAR sensor](Gifs/lidarrviz.png)
+
+![Obstacle Detection](Gifs/LidarObstacles.gif)
+
 ### 9. Transform Publisher (`TfPublisher.cs`)
 The TF publisher sends the vehicle and sensor coordinate relationships as a TFMessageMsg on /tf. It publishes the vehicle transform from world to base_link, then publishes the GPS, IMU, camera and LiDAR frames relative to base_link.
+
+![Tf Publisher](Gifs/TfScript.png)
 
 ##### A. Configuration Parameters
 * **tfTopic** (string): ROS topic used for TF (Transform Frame) publication.
@@ -350,6 +376,8 @@ The TF publisher sends the vehicle and sensor coordinate relationships as a TFMe
 
 ### 10. Joint State Publisher (`JointStatePublisher.cs`)
 The joint state publisher reads wheel rotation from the four WheelColliders, converts RPM to radians per second, integrates the wheel position, and publishes the result as sensor_msgs/JointState on /joint_states.
+
+![Joint State Publisher](Gifs/Jointstatescript.png)
 
 ##### A. Configuration Parameters
 * **jointStateTopic** (string): ROS topic used for Joint State publication.
