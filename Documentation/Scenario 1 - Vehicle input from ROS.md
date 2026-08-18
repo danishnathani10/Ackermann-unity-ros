@@ -34,7 +34,8 @@ The scenario uses the custom `ugv_assignment_msgs/Input` and `ugv_assignment_msg
 
 **Evaluation Video**
 
-[PLACE ROS INPUT OUTPUT YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
+🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](https://www.youtube.com/watch?v=wvYu8hE7G8I)**
+[![Ackermann](Gifs/ROSInOut.png)](https://www.youtube.com/watch?v=wvYu8hE7G8I)
 
 ---
 
