@@ -32,7 +32,6 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
 
 The simulation combines a ROS2 controlled vehicle with synthetic sensor publishing and dedicated evaluation environments.
 
-
 ---
 
 
@@ -83,6 +82,22 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 
 </tr>
 </table>
+
+<tr>
+<td width="100%" align="center" valign="middle">
+
+<img src="Gifs/LidarObstacles.gif" width="70%" alt="Obstacle detection using LiDAR">
+
+<br><br>
+
+<div align="center">
+
+<b>Obstacle detection using LiDAR</b>
+
+</div>
+
+</td>
+</tr>
 
 ---
 
