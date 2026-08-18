@@ -94,9 +94,9 @@ The package includes dedicated scenes covering the evaluation requirements.
 
 This demonstration shows the complete ROS2 control and feedback loop.
 
-🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](https://youtu.be/wvYu8hE7G8I?si=Sx3LrtqQXpzNq0-b)**
+🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](https://www.youtube.com/watch?v=wvYu8hE7G8I)**
 
-[![Ackermann](Documentation/Gifs/ROSInOut.png)](https://youtu.be/wvYu8hE7G8I?si=Sx3LrtqQXpzNq0-b)
+[![Ackermann](Documentation/Gifs/ROSInOut.png)](https://www.youtube.com/watch?v=wvYu8hE7G8I)
 
 ```text
 ROS2 Input Command
@@ -142,9 +142,9 @@ float64 front_right_steering_angle   # radians
 
 A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
 
-🎥 **[Watch the Ackermann steering in obstacle scene](https://youtu.be/lUshATn7ntE)**
+🎥 **[Watch the Ackermann steering in obstacle scene](https://www.youtube.com/watch?v=lUshATn7ntE)**
 
- [![Obstacle Course](Documentation/Gifs/Obstacles.png)](https://youtu.be/IusHATn7ntE)
+ [![Obstacle Course](Documentation/Gifs/Obstacles.png)](https://www.youtube.com/watch?v=lUshATn7ntE)
 
 ---
 
@@ -155,9 +155,9 @@ A custom environment for validating vehicle movement between fixed obstacles usi
 
 The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity of **8 m/s**.
 
-🎥 **[Watch the car driving in dunes at min velocity of 8 m/s](https://youtu.be/taptY6ne6p0)**
+🎥 **[Watch the car driving in dunes at min velocity of 8 m/s](https://www.youtube.com/watch?v=taptY6ne6p0)**
 
-[![Desert Driving](Documentation/Gifs/Duney.png)](https://youtu.be/taptY6e6p0)
+[![Desert Driving](Documentation/Gifs/Duney.png)](https://www.youtube.com/watch?v=taptY6ne6p0)
 
 The terrain uses the following physics material:
 
@@ -177,9 +177,9 @@ Bounce Combine: Average
 
 Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
 
-🎥 **[Watch the Sand detection in LiDar and Camera | Synthetic Data ](https://youtu.be/5GQZkRiDoXE)**
+🎥 **[Watch the Sand detection in LiDar and Camera | Synthetic Data ](https://www.youtube.com/watch?v=5GQZkRiDoXE)**
 
-[![Sand Synthetic Data](Documentation/Gifs/Particles.png)](https://youtu.be/5QZkRiDoXE)
+[![Sand Synthetic Data](Documentation/Gifs/Particles.png)](https://www.youtube.com/watch?v=5GQZkRiDoXE)
 
 | Camera                                     | LiDAR                                     |
 | ------------------------------------------ | ----------------------------------------- |
