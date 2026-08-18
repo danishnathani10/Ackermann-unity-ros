@@ -8,7 +8,9 @@ The entire desert terrain landscape was custom made for this test and used the r
 
 **Evaluation Video**
 
-[PLACE DESERT SCENE YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
+🎥 **[Watch the car driving in dunes at min velocity of 8 m/s](https://www.youtube.com/watch?v=taptY6ne6p0)**
+
+[![Desert Driving](Gifs/Duney.png)](https://www.youtube.com/watch?v=taptY6ne6p0)
 
 ---
 
