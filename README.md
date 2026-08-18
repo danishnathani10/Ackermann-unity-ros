@@ -222,8 +222,17 @@ https://github.com/Unity-Technologies/ROS-TCP-Connector.git?path=/com.unity.robo
 source /opt/ros/[DISTRO]/setup.bash
 ros2 run ros_tcp_endpoint default_server_endpoint
 ```
+## 3 Important: Set the ROS Protocol to ROS2
 
-## 3. Install the Package (Recommended Method)
+1. In Unity, go to **Robotics → ROS Settings**.
+2. Find the **Protocol** setting.
+3. Select **ROS2**.
+4. Allow Unity to finish recompiling if prompted.
+
+If you are on ROS1, you will see cast error of uint/int from publishers But if you switch to ROS2 you will not see that error.
+
+
+## 4. Install the Package (Recommended Method)
 
 > **Recommended:** Download the repository as a ZIP file rather than importing it directly using the Git URL, to avoid scene read only issue.
 
@@ -234,7 +243,7 @@ ros2 run ros_tcp_endpoint default_server_endpoint
 3. In Unity, open: Window → Package Manager → + → Add package from disk...
 4. Navigate to the extracted repository and select: **package.json**
 
-## 4. Open any evaluation scene
+## 5. Open any evaluation scene
 
 ```text
 Packages/
@@ -326,13 +335,13 @@ The unique texture painting and source `.blend` file are included to demonstrate
 
 # Key Takeaways
 
-This project gave me experience beyond just Unity. It helped connect 3D simulation with robotics tools and workflows.
+This assignment gave experience beyond just Unity. It helped connect 3D simulation with robotics tools and workflows.
 Some of the biggest things learned were:
 
 * **Working with Linux and WSL:** Setting up and using Ubuntu through Windows Subsystem for Linux (WSL), running ROS 2 commands, managing packages, workspaces, and debugging communication between Windows and Linux.
 * **Robotics Sensor Simulation:** Learning how GPS, IMU, Camera, LiDAR, TF, and Joint States can be generated from a simulated vehicle.
 * **ROS Bags:** Learning how to record, replay, and verify simulation data without having to run the complete Unity scene again.
-* **Debugging Complex Systems:** The toughest part was making multiple systems work together at the same time — Unity physics, ROS communication, custom messages, sensors, terrain, and data publishing.
+* **Debugging Complex Systems:** making multiple systems work together at the same time — Unity physics, ROS communication, custom messages, sensors, terrain, and data publishing.
 
 Personally, a huge level up in terms of knowledge, debugging and problem solving.
 
@@ -372,7 +381,7 @@ The following third party software, frameworks, packages, websites, and tools we
 - [RViz](https://github.com/ros2/rviz) — Used for visualizing ROS data and sensor output.
 - [Blender](https://www.blender.org/) — Used to create and prepare custom 3D assets for the simulation scenes.
 - [OBS Studio](https://obsproject.com/) — Used for recording simulation demonstrations.
-- [LiCapture](https://github.com/MathewSachin/Captura) — Used for screen/video capture where applicable.
+- [LICEcap](https://www.cockos.com/licecap/) — Used for screen capture in GIF format.
 - [DaVinci Resolve](https://www.blackmagicdesign.com/products/davinciresolve) — Used for video editing and presentation preparation.
 - [GitHub](https://github.com/) — Used for repository hosting and version control.
 - [ChatGPT](https://chatgpt.com/) — Used as an AI assisted development and documentation tool during implementation, debugging, and documentation.
