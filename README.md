@@ -55,6 +55,8 @@ The package includes dedicated scenes covering the evaluation requirements.
 
 This demonstration shows the complete ROS2 control and feedback loop.
 
+🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](https://youtu.be/wvYu8hE7G8I)**
+
 **[PLACE ROS INPUT / ROS OUTPUT GIF OR SCREENSHOT HERE]**
 
 ```text
@@ -93,8 +95,6 @@ float64 front_right_steering_angle   # radians
 
 **[PLACE ROS INPUT TERMINAL + UNITY VEHICLE + ROS OUTPUT TERMINAL SCREENSHOT HERE]**
 
-🎥 **[Watch the ROS Input & Vehicle Feedback Demonstration](PLACE_ROS_INPUT_OUTPUT_YOUTUBE_LINK_HERE)**
-
 ---
 
 ### 02 — [Obstacle Course](Documentation/Scenario%202%20-%20Obstacle%20Scene.md)
@@ -102,6 +102,8 @@ float64 front_right_steering_angle   # radians
 **[PLACE OBSTACLE COURSE GIF HERE]**
 
 A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
+
+🎥 **[Watch the Ackermann steering in obstacle scene](https://youtu.be/lUshATn7ntE)**
 
 **[Optional: PLACE TOP-DOWN OR WIDE SCREENSHOT HERE]**
 
@@ -112,7 +114,9 @@ A custom environment for validating vehicle movement between fixed obstacles usi
 
 **[PLACE DESERT / DUNE GIF HERE]**
 
-The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity target of **8 m/s**.
+The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity of **8 m/s**.
+
+🎥 **[Watch the car driving in dunes at min velocity of 8 m/s](https://youtu.be/taptY6ne6p0)**
 
 **[PLACE VELOCITY / OUTPUT PROOF SCREENSHOT HERE]**
 
@@ -133,6 +137,8 @@ Bounce Combine: Average
 ### 04 — [Sand Synthetic Data](Documentation/Scenario%204%20-%20Sand%20Synthetics%20Data.md)
 
 Sand particles are detected with LiDar sensor and captured from Camera sensor. All of this is ROS bag for synthetic data evaluation.
+
+🎥 **[Watch the Sand detection in LiDar and Camera | Synthetic Data ](https://youtu.be/5GQZkRiDoXE)**
 
 | Camera                                     | LiDAR                                     |
 | ------------------------------------------ | ----------------------------------------- |
