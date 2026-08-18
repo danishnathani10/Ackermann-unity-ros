@@ -2,9 +2,6 @@
 
 A simulation package that connects an Ackermann steered vehicle made in Unity to ROS2 for vehicle control, synthetic sensor generation, and evaluation data recording.
 
-## Tech Stack
-**Unity 3D • ROS2 • Ackermann Steering • GPS • IMU • Camera • LiDAR • RViz • OBS Studio • DaVinci Resolve**
-
 ---
 
 
