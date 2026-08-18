@@ -10,8 +10,9 @@ The complete sensor output was logged into a ROS bag so you can easily replay an
 
 **Evaluation Video**
 
-[PLACE SAND SYNTHETIC DATA YOUTUBE VIDEO EMBED / THUMBNAIL HERE]
+🎥 **[Watch the Sand detection in LiDar and Camera | Synthetic Data ](https://www.youtube.com/watch?v=5GQZkRiDoXE)**
 
+[![Sand Synthetic Data](Gifs/Particles.png)](https://www.youtube.com/watch?v=5GQZkRiDoXE)
 ---
 
 # 1. Objective
