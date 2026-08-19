@@ -379,7 +379,7 @@ Each evaluation scenario is accompanied by a video recording and ROS bag data.
 
 ---
 
-# References & Third-Party Tools
+# References & Third Party Tools
 
 The following third party software, frameworks, packages, websites, and tools were used for this assignment:
 
