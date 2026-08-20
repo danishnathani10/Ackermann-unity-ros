@@ -142,8 +142,6 @@ float64 front_left_steering_angle    # radians
 float64 front_right_steering_angle   # radians
 ```
 
-**[PLACE ROS INPUT TERMINAL + UNITY VEHICLE + ROS OUTPUT TERMINAL SCREENSHOT HERE]**
-
 ---
 
 ### 02 — [Obstacle Course](Documentation/Scenario%202%20-%20Obstacle%20Scene.md)
