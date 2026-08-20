@@ -173,8 +173,6 @@ Friction Combine: Minimum
 Bounce Combine: Average
 ```
 
-**[PLACE UNITY PHYSICS MATERIAL INSPECTOR SCREENSHOT HERE]**
-
 ---
 
 ### 04 — [Sand Synthetic Data](Documentation/Scenario%204%20-%20Sand%20Synthetics%20Data.md)
