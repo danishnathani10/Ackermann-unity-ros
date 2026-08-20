@@ -10,22 +10,22 @@ A simulation package that connects an Ackermann steered vehicle made in Unity to
 <table>
   <tr>
     <td align="center" width="33%">
-      <h3>🚙 Vehicle & Control</h3>
+      <h3>Vehicle & Control</h3>
       <img src="Documentation/Gifs/Obstaclez.gif" width="100%" alt="Vehicle navigating obstacle course">
       <br><br>
       ROS 2 controlled Ackermann vehicle navigating obstacles.
     </td>
     <td align="center" width="33%">
-      <h3>📡 Sensor Simulation</h3>
+      <h3>Sensor Simulation</h3>
       <img src="Documentation/Gifs/Sandsensor.gif" width="100%" alt="LiDAR sensor simulation">
       <br><br>
-      LiDAR raycasting and sensor visualization.
+      LiDAR raycasting & sensor visualization.
     </td>
     <td align="center" width="33%">
-      <h3>🏜️ Terrain Evaluation</h3>
+      <h3>Terrain Evaluation</h3>
       <img src="Documentation/Gifs/Dune.gif" width="100%" alt="Desert terrain evaluation">
       <br><br>
-      Vehicle evaluation across challenging desert terrain.
+      Vehicle across challenging desert terrain.
     </td>
   </tr>
 </table>
