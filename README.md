@@ -146,8 +146,6 @@ float64 front_right_steering_angle   # radians
 
 ### 02 — [Obstacle Course](Documentation/Scenario%202%20-%20Obstacle%20Scene.md)
 
-**[PLACE OBSTACLE COURSE GIF HERE]**
-
 A custom environment for validating vehicle movement between fixed obstacles using vehicle with Ackermann Steering and Wheel Suspensions testing.
 
 🎥 **[Watch the Ackermann steering in obstacle scene](https://www.youtube.com/watch?v=lUshATn7ntE)**
@@ -158,8 +156,6 @@ A custom environment for validating vehicle movement between fixed obstacles usi
 
 
 ### 03 — [Desert Driving](Documentation/Scenario%203%20-%20Desert%20Scene.md)
-
-**[PLACE DESERT / DUNE GIF HERE]**
 
 The vehicle driving through desert terrain containing dunes and bumps with a minimum velocity of **8 m/s**.
 
@@ -188,10 +184,6 @@ Sand particles are detected with LiDar sensor and captured from Camera sensor. A
 🎥 **[Watch the Sand detection in LiDar and Camera | Synthetic Data ](https://www.youtube.com/watch?v=5GQZkRiDoXE)**
 
 [![Sand Synthetic Data](Documentation/Gifs/Particles.png)](https://www.youtube.com/watch?v=5GQZkRiDoXE)
-
-| Camera                                     | LiDAR                                     |
-| ------------------------------------------ | ----------------------------------------- |
-| **[PLACE CAMERA PARTICLE IMAGE/GIF HERE]** | **[PLACE LIDAR PARTICLE IMAGE/GIF HERE]** |
 
 Vehicle movement is not required for this scene. The focus is on how the particles appear in the generated sensor outputs.
 
