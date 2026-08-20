@@ -44,7 +44,7 @@ The simulation combines a ROS2 controlled vehicle with synthetic sensor publishi
 
 ### Vehicle
 
-- **Ackermann Steering** — Computes front wheel steering angles for real vehicle-like turning.
+- **Ackermann Steering** — Computes front wheel steering angles for real vehicle like turning.
 - **ROS Vehicle Control** — Receives throttle, brake, and steering commands from ROS2.
 - **Four Wheel Suspension** — Simulates wheel movement over uneven terrain.
 
